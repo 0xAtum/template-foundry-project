@@ -1,0 +1,46 @@
+name: Slither Analysis
+on: [push]
+
+env:
+  SOLC_VERSION: "0.8.7" 
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: creates .secrets
+        env:
+          SECRET_FILE: ${{ secrets.SECRETFILE }}
+        run: echo $SECRET_FILE | base64 --decode > .env
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Build Foundry Project
+        run: | 
+          forge install 
+          forge build --extra-output abi --extra-output userdoc --extra-output devdoc --extra-output evm.methodIdentifiers --force
+
+      - uses: crytic/slither-action@main
+        continue-on-error: true
+        id: slither
+        with:
+          target: ./src/main
+          slither-config: ./slither-config.json
+          solc-version: ${{env.SOLC_VERSION}}
+          slither-version: 0.8.3
+          sarif: results.sarif
+
+      # Require Github entreprise or public repo
+      # - name: Upload SARIF file for core
+      #   uses: github/codeql-action/upload-sarif@v2
+      #   id: upload-1
+      #   with:
+      #     sarif_file: ${{ steps.slither.outputs.sarif }}
