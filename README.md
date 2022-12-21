@@ -5,6 +5,12 @@
 
 This is my go to template when I'm starting a new project.
 
+## Template Solidity Project vs Template Foundry Project
+If you used [Template Solidity Project](https://github.com/0xAtum/template-solidity-project) before here what changed
+- Folder Structure (test is outside of src)
+- Deployment is completely new (duh, this is no longer hardhat)
+- BaseTest is still the same but has more utilities
+
 
 ## Dependencies
 
@@ -57,7 +63,6 @@ Example
 **Note**: Be sure you prepare your output file. let say you want to deploy on a network called `LocalHost`, you have to create the output file `/deployment/LocalHost.json` first
 
 ## Commands script
-
 I'm using
 [MakeFile](https://github.com/0xAtum/template-foundry-project/blob/main/Makefile)
 for the commands.
@@ -66,7 +71,6 @@ e.g: `make tests`
 e.g (with args): `make tests EXTRA='-vvv --match-contract HelloWorldTest'`
 
 ## Recommendations
-
 - Using VSCode. (Sadly, there's no real support on intellij)
 - solidity extention by Juan Blanco (be sure to set forge as its Formatter)
 
@@ -75,6 +79,19 @@ e.g (with args): `make tests EXTRA='-vvv --match-contract HelloWorldTest'`
 - [Decoding JSON](https://book.getfoundry.sh/cheatcodes/parse-json?highlight=json#decoding-json-objects-into-solidity-structs)
 - [Fork Testing](https://book.getfoundry.sh/forge/fork-testing?highlight=fork#forking-cheatcodes)
 - [Slither](https://github.com/crytic/slither/wiki/Usage)
+
+## Mock
+***Why not including other major contracts for mocking?***
+In unit testing, you are supposed to mock the function output, not the whole logic. Technically speaking, what people are doing with their mock contract is bad practice of unit testings as you're over-complicating your tests by not isolating it.
+
+Best example is those who's validating this error `vm.expect("ERC20: transfer amount exceeds balance")` . Your contract isn't the one with this logic, and so, it shouldn't be yours, but the ERC20.t.sol that verify it.
+
+## Contributions
+Feel free to contribute on this template. The PR / your code needs to follow this standard
+- Internal Function starts with `_` 
+- Function parameters starts with `_`
+- use `return` keyword even though the function is doing it when you're naming the returned value.
+- new Features needs to be generic.
 
 ## License
 MIT
