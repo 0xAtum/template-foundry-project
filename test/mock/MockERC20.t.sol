@@ -12,10 +12,10 @@ contract MockERC20 is Test {
   string private constant SIG_DECIMALS = "decimals()";
   string private constant SIG_TOTAL_SUPPLY = "totalSupply()";
   string private constant SIG_ALLOWANCE = "allowance(address,address)";
-  string private constant SIG_APPROVE = "approve(address spender, uint256 amount)";
-  string private constant SIG_TRANSFER_FROM = "transferFrom(address, address, uint256)";
-  string private constant SIG_INCREASE_ALLOWANCE = "increaseAllowance(address, uint256)";
-  string private constant SIG_DECREASE_ALLOWANCE = "decreaseAllowance(address, uint256)";
+  string private constant SIG_APPROVE = "approve(address spender,uint256)";
+  string private constant SIG_TRANSFER_FROM = "transferFrom(address,address,uint256)";
+  string private constant SIG_INCREASE_ALLOWANCE = "increaseAllowance(address,uint256)";
+  string private constant SIG_DECREASE_ALLOWANCE = "decreaseAllowance(address,uint256)";
 
   function mockBalance(address _token, address _of, uint256 _amount) internal {
     vm.mockCall(_token, abi.encodeWithSignature(SIG_BALANCE_OF, _of), abi.encode(_amount));
