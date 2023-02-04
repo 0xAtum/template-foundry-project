@@ -86,7 +86,7 @@ Feel free to contribute on this template. The PR / your code needs to follow thi
 - Internal Function starts with `_` 
 - Function parameters starts with `_`
 - use `return` keyword even though the function is doing it when you're naming the returned value.
-- new Features needs to be generic.
+- new Features need to be generic.
 
 ## License
 MIT
