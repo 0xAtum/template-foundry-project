@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import "forge-std/Test.sol";
 
-contract MockERC20 is Test {
+contract MockERC20ABI is Test {
   string private constant SIG_BALANCE_OF = "balanceOf(address)";
   string private constant SIG_MINT = "mint(address,uint256)";
   string private constant SIG_BURN = "burn(address,uint256)";
@@ -83,6 +83,10 @@ contract MockERC20 is Test {
     );
   }
 
+  function mockAnyTransfer(address _token) internal {
+    vm.mockCall(_token, abi.encodeWithSignature(SIG_TRANSFER), abi.encode(true));
+  }
+
   function expectTransferFrom(address _token, address _from, address _to, uint256 _amount)
     internal
   {
@@ -102,5 +106,9 @@ contract MockERC20 is Test {
       abi.encodeWithSignature(SIG_TRANSFER_FROM, _from, _to, _amount),
       abi.encode(_result)
     );
+  }
+
+  function mockAnyTransferFrom(address _token) internal {
+    vm.mockCall(_token, abi.encodeWithSignature(SIG_TRANSFER_FROM), abi.encode(true));
   }
 }

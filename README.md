@@ -80,11 +80,6 @@ e.g (with args): `make tests EXTRA='-vvv --match-contract HelloWorldTest'`
 - [Fork Testing](https://book.getfoundry.sh/forge/fork-testing?highlight=fork#forking-cheatcodes)
 - [Slither](https://github.com/crytic/slither/wiki/Usage)
 
-## Mock
-***Why not including other major contracts for mocking?***
-In unit testing, you are supposed to mock the function output, not the whole logic. Technically speaking, what people are doing with their mock contract is bad practice of unit testings as you're over-complicating your tests by not isolating it.
-
-Best example is those who's validating this error `vm.expect("ERC20: transfer amount exceeds balance")` . Your contract isn't the one with this logic, and so, it shouldn't be yours, but the ERC20.t.sol that verify it.
 
 ## Contributions
 Feel free to contribute on this template. The PR / your code needs to follow this standard

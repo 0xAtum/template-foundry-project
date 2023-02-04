@@ -2,9 +2,9 @@
 pragma solidity >=0.8.0;
 
 import "forge-std/Test.sol";
-import { MockERC20 } from "../mock/MockERC20.t.sol";
+import { MockERC20ABI } from "../mock/abi/MockERC20ABI.t.sol";
 
-contract BaseTest is Test, MockERC20 {
+contract BaseTest is Test, MockERC20ABI {
   uint256 internal constant MAX_UINT = type(uint256).max;
 
   bytes internal constant ERROR_NOT_OWNER = "Ownable: caller is not the owner";
