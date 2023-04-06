@@ -21,11 +21,11 @@ contract BaseScript is Script {
   mapping(string => address) internal contracts;
 
   /**
-   * @notice _saveDeployment - Get config file from "/script/config/{_fileName}.json
+   * @notice _saveDeployment - Get config file from "/script/config/`_fileName`.json
    * @param _network the name of the Network deployed on
    * @param _contractName the name of the contract (what will be shown inside the /deployments/ file)
    * @param _contractAddress the address of the contract
-   * @dev If the ${_contractName} already exists, it will not save it again
+   * @dev If the `_contractName` already exists, it will not save it again
    * @dev Simulation broadcast will also save inside the deployments file. I haven't find a way to detect simulations yet
    */
   function _saveDeployment(
@@ -33,6 +33,8 @@ contract BaseScript is Script {
     string memory _contractName,
     address _contractAddress
   ) internal {
+    if (vm.envBool("IS_SIMULATION")) return;
+
     string memory json = "NewDeployment";
     string memory insertData;
 
@@ -80,7 +82,7 @@ contract BaseScript is Script {
   }
 
   /**
-   * @notice _getConfig - Get config file from "/script/config/{_fileName}.json
+   * @notice _getConfig - Get config file from "/script/config/`_fileName`.json
    * @param _fileName the name of the config file (without extension)
    * @return fileData_ Raw data of the file. use vm.parseJson(fileData_, jsonKey) to get the json encoded data
    */
@@ -157,5 +159,9 @@ contract BaseScript is Script {
     string memory file = string.concat(_network, ".json");
 
     return string.concat(path, file);
+  }
+
+  function _isNull(address _a) internal pure returns (bool) {
+    return _a == address(0);
   }
 }

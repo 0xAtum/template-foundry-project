@@ -2,8 +2,6 @@
 # (-include to ignore error if it does not exist)
 -include .env
 
-FORGE_CLEAN = forge clean
-
 # How to use $(EXTRA) or $(NETWORK)
 # define it with your command. 
 # e.g: make test EXTRA='-vvv --match-contract MyContractTest'
@@ -16,18 +14,19 @@ remappings:; forge remappings > remappings.txt
 # commands
 coverage :; forge coverage 
 coverage-output :; forge coverage --report lcov
-build  :; $(FORGE_CLEAN) && forge build 
-clean  :; $(FORGE_CLEAN)
+build  :; forge build --force 
+clean  :; forge clean
 
 # tests
-tests   :; export FOUNDRY_PROFILE=unit $(FORGE_CLEAN) && forge test $(EXTRA)
-tests-e2e :; export FOUNDRY_PROFILE=e2e $(FORGE_CLEAN) && forge test $(EXTRA)
+tests   :; export FOUNDRY_PROFILE=unit && forge test $(EXTRA)
+tests-e2e :; export FOUNDRY_PROFILE=e2e && forge test $(EXTRA)
 
 # Gas Snapshots
-snapshot :; $(FORGE_CLEAN) && forge snapshot $(EXTRA)
-snapshot-fork :; $(FORGE_CLEAN) && forge snapshot --snap .gas-snapshot-fork $(RPC) $(EXTRA)
+snapshot :; forge snapshot $(EXTRA)
+snapshot-fork :; forge snapshot --snap .gas-snapshot-fork $(RPC) $(EXTRA)
 
 #Analytic Tools
 slither :; slither --config-file ./slither-config.json src/
 
-deploy :; $(FORGE_CLEAN) && forge script script/contract/$(FILENAME).s.sol --rpc-url $(RPC) --sig "run(string)" $(NETWORK) --broadcast --verify -vvvv
+deploy :; export IS_SIMULATION=false && forge build --force && forge script $(FILEPATH) --rpc-url $(RPC) --sig "run(string)" $(NETWORK) --broadcast --verify -vvvv $(EXTRA)
+simulate-deploy :; export IS_SIMULATION=true && forge script $(FILEPATH) --rpc-url $(RPC) --sig "run(string)" $(NETWORK) -vvvv $(EXTRA)
