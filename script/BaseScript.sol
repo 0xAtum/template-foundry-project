@@ -15,24 +15,38 @@ contract BaseScript is Script {
 
   string private constant PATH_CONFIG = "/script/config/";
   string private constant ENV_PRIVATE_KEY = "DEPLOYER_PRIVATE_KEY";
+  string private constant ENV_DEPLOY_NETWORK = "DEPLOY_NETWORK";
   string private constant DEPLOY_HISTORY_PATH = "/deployment/";
   string private constant KEY_CONTRACT_NAME = "contractName";
 
   mapping(string => address) internal contracts;
 
   /**
+   * @notice _setNetwork define env value of DEPLOY_NETWORK
+   * @dev it should be the first function called inside run(string memory _network)
+   */
+  function _setNetwork(string memory _network) internal {
+    vm.setEnv(ENV_DEPLOY_NETWORK, _network);
+  }
+
+  /**
+   * @notice _getNetwork return the .env variable DEPLOY_NETWORK.
+   * @dev For a better experience, DEPLOY_NETWORK should be defined via _setNetwork(string memory _network) and not .env
+   */
+  function _getNetwork() internal view returns (string memory) {
+    return vm.envString(ENV_DEPLOY_NETWORK);
+  }
+
+  /**
    * @notice _saveDeployment - Get config file from "/script/config/`_fileName`.json
-   * @param _network the name of the Network deployed on
    * @param _contractName the name of the contract (what will be shown inside the /deployments/ file)
    * @param _contractAddress the address of the contract
    * @dev If the `_contractName` already exists, it will not save it again
    * @dev Simulation broadcast will also save inside the deployments file. I haven't find a way to detect simulations yet
    */
-  function _saveDeployment(
-    string memory _network,
-    string memory _contractName,
-    address _contractAddress
-  ) internal {
+  function _saveDeployment(string memory _contractName, address _contractAddress)
+    internal
+  {
     if (vm.envBool("IS_SIMULATION")) return;
 
     string memory json = "NewDeployment";
@@ -41,7 +55,7 @@ contract BaseScript is Script {
     vm.serializeString(json, "contractName", _contractName);
     string memory output = vm.serializeAddress(json, "contractAddress", _contractAddress);
 
-    string memory currentData = vm.readFile(_getDeploymentPath(_network));
+    string memory currentData = vm.readFile(_getDeploymentPath(_getNetwork()));
     strings.slice memory slicedCurrentData = currentData.toSlice();
 
     if (
@@ -59,7 +73,7 @@ contract BaseScript is Script {
       insertData = string.concat(insertData, "]");
     }
 
-    vm.writeJson(insertData, _getDeploymentPath(_network));
+    vm.writeJson(insertData, _getDeploymentPath(_getNetwork()));
   }
 
   function _addContractToString(string memory _currentData, string memory _contractData)
@@ -102,10 +116,9 @@ contract BaseScript is Script {
 
   /**
    * @notice _loadContracts - Loads the deployed contracts from a network inside the mapping "contracts"
-   * @param _network the name of the network
    */
-  function _loadContracts(string memory _network) internal {
-    Deployment[] memory deployments = _getDeployedContracts(_network);
+  function _loadContracts() internal {
+    Deployment[] memory deployments = _getDeployedContracts(_getNetwork());
 
     Deployment memory cached;
     uint256 length = deployments.length;
