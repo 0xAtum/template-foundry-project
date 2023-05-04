@@ -47,6 +47,7 @@ contract BaseScript is Script {
   function _saveDeployment(string memory _contractName, address _contractAddress)
     internal
   {
+    vm.label(_contractAddress, _contractName);
     if (vm.envBool("IS_SIMULATION")) return;
 
     string memory json = "NewDeployment";
@@ -125,6 +126,7 @@ contract BaseScript is Script {
     for (uint256 i = 0; i < length; ++i) {
       cached = deployments[i];
       contracts[cached.contractName] = cached.contractAddress;
+      vm.label(cached.contractAddress, cached.contractName);
     }
   }
 
