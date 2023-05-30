@@ -4,8 +4,7 @@
 
 # How to use $(EXTRA) or $(NETWORK)
 # define it with your command. 
-# e.g: make test EXTRA='-vvv --match-contract MyContractTest'
-# e.g: make deploy-testnet NETWORK='arbitrumTestnet'
+# e.g: make tests EXTRA='-vvv --match-contract MyContractTest'
 
 # deps
 update:; forge update

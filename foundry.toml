@@ -14,8 +14,8 @@ remappings = [
 match_path = "test/e2e/*"
 
 [profile.unit]
-block_number = 8273
-block_timestamp = 1671541474
+block_number = 17373196
+block_timestamp = 1685467379
 match_path = "test/unit/*"
 
 [rpc_endpoints]
