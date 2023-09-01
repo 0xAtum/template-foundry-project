@@ -89,7 +89,7 @@ You will see in red the code that isn't being tested by your tests.
 
 **IS_SIMULATION** = Right now we don't have any variable to know if it's simulate-deploy, at least I didn't find it. So I use this env variable so we don't save the deployed contracts during this simulation.
 
-**FILEPATH** = The path of your deployment file script. e.g: src/script/contract/HelloWorldScript.s.sol
+**SCRIPT_NAME** = The script contract's name of your deployment file script. e.g: src/script/contract/HelloWorld.s.sol, the contract name is HelloWorldScript
 
 **RPC** = Your RPC
 
@@ -97,7 +97,7 @@ You will see in red the code that isn't being tested by your tests.
 
 Example
 
-    make deploy FILEPATH="src/script/contract/HelloWorldScript.s.sol" /
+    make deploy SCRIPT_NAME="HelloWorldScript" /
     RPC="${GOERLI_ARBITRUM_TESTNET}" NETWORK="arbitrumTestnet"
 
   
@@ -111,7 +111,7 @@ Example
  
 Same as the above, but with `simulate-deploy`
 
-    simulate-deploy :; export IS_SIMULATION=true && forge script $(FILEPATH) \
+    simulate-deploy :; export IS_SIMULATION=true && forge script $(SCRIPT_NAME) \
     --rpc-url $(RPC) --sig "run(string)" $(NETWORK) -vvvv $(EXTRA)
 
 ## Commands script
