@@ -17,7 +17,7 @@ contract BaseTest is Test, MockERC20ABI {
    * Start Pranking as a specific address
    */
   modifier prankAs(address caller) {
-    vm.startPrank(caller);
+    vm.startPrank(caller, caller);
     _;
     vm.stopPrank();
   }
@@ -25,12 +25,17 @@ contract BaseTest is Test, MockERC20ABI {
   /**
    * Start Pranking, you don't care who.
    * Mainly used when you have multiple pranks and want to use
-   * changePrank();
+   * vm.startPrank();
    */
   modifier pranking() {
-    vm.startPrank(address(0x1671629561));
+    vm.startPrank(address(0x1671629561), address(0x1671629561));
     _;
     vm.stopPrank();
+  }
+
+  function changePrank(address msgSender) internal override {
+    vm.stopPrank();
+    vm.startPrank(msgSender, msg.sender);
   }
 
   function generateAddress(string memory _name, bool _isContract)
