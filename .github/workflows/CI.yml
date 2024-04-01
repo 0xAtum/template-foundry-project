@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, reopened]
 
+env:
+  RPC_MAINNET: https://eth.llamarpc.com
+  RPC_ARBITRUM: https://arbitrum.llamarpc.com
+
 jobs:
   check:
     name: Foundry project
@@ -20,3 +24,6 @@ jobs:
 
       - name: Run unit tests
         run: make tests
+      
+      - name: Run e2e tests
+        run: make tests-e2e
