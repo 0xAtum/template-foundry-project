@@ -20,15 +20,15 @@ match_path = "test/unit/*"
 
 [rpc_endpoints]
 mainnet = "${RPC_MAINNET}"
-goerli = "${RPC_GOERLI}"
+sepolia = "${RPC_SEPOLIA}"
 arbitrumOne = "${RPC_ARBITRUM}"
-arbitrumOneTestnet = "${RPC_ARBITRUM_GOERLI}"
+arbitrumOneTestnet = "${RPC_ARBITRUM_SEPOLIA}"
 
 [etherscan]
 mainnet = { key = "${ETHERSCAN_KEY}", chain = 1, url = "https://api.etherscan.io/api/"}
-goerli = { key = "${ETHERSCAN_KEY}", chain = 5, url = "https://api-goerli.etherscan.io/api/"}
+sepolia = { key = "${ETHERSCAN_KEY}", chain = 11155111, url = "https://api-sepolia.etherscan.io/api"}
 arbitrumOne = { key = "${ARBISCAN_KEY}", chain = 42161, url = "https://api.arbiscan.io/api/"}
-arbitrumGoerli = { key = "${ARBISCAN_KEY}", chain = 421613, url = "https://api-goerli.arbiscan.io/api/"}
+arbitrumGoerli = { key = "${ARBISCAN_KEY}", chain = 421613, url = "https://api-sepolia.arbiscan.io/api/"}
 
 
 [fmt]

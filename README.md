@@ -98,7 +98,7 @@ You will see in red the code that isn't being tested by your tests.
 Example
 
     make deploy SCRIPT_NAME="HelloWorldScript" /
-    RPC="${GOERLI_ARBITRUM_TESTNET}" NETWORK="arbitrumTestnet"
+    RPC="${SEPOLIA_ARBITRUM_TESTNET}" NETWORK="arbitrumTestnet"
 
   
 
