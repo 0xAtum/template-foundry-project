@@ -48,7 +48,7 @@ contract BaseScript is Script {
     internal
   {
     vm.label(_contractAddress, _contractName);
-    if (vm.envBool("IS_SIMULATION")) return;
+    if (_isSimulation()) return;
 
     string memory json = "NewDeployment";
     string memory insertData;
@@ -119,6 +119,8 @@ contract BaseScript is Script {
    * @notice _loadContracts - Loads the deployed contracts from a network inside the mapping "contracts"
    */
   function _loadContracts() internal {
+    if (_isSimulation()) return;
+
     Deployment[] memory deployments = _getDeployedContracts(_getNetwork());
 
     Deployment memory cached;
@@ -178,5 +180,9 @@ contract BaseScript is Script {
 
   function _isNull(address _a) internal pure returns (bool) {
     return _a == address(0);
+  }
+
+  function _isSimulation() internal view returns (bool) {
+    return vm.envBool("IS_SIMULATION");
   }
 }
