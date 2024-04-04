@@ -139,7 +139,7 @@ e.g (with args): `make tests EXTRA='-vvv --match-contract HelloWorldTest'`
 
 - Using VSCode. (Sadly, there's no real support on intellij)
 
-- solidity extention by Juan Blanco (be sure to set forge as its Formatter)
+- solidity extention by Nomic Foundation (Be sure to set Forge as formatter)
 
   
   
