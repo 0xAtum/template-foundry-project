@@ -19,6 +19,7 @@ block_timestamp = 1685467379
 match_path = "test/unit/*"
 
 [rpc_endpoints]
+localhost = "http://127.0.0.1:8545"
 mainnet = "${RPC_MAINNET}"
 sepolia = "${RPC_SEPOLIA}"
 arbitrum = "${RPC_ARBITRUM}"

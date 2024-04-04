@@ -7,8 +7,17 @@ get_env_value() {
 
 script_directory="script/deploy"
 
+# This is overkill since the forge script already checks for builds. 
+# However, I once encountered an issue where I deployed an old version of the build. 
+# Therefore, it is better to play it safe.
+forge build --force
+
 while true; do
     RPC_URL="missing url" 
+
+    #
+    # Get Endpoints / Network from Foundry.toml
+    #
 
     # Extract rpc_endpoints keys from the TOML file
     endpoints=$(awk '/\[rpc_endpoints\]/ {flag=1; next} /\[/{flag=0} flag && !/^$/{print $1}' foundry.toml)
@@ -20,15 +29,23 @@ while true; do
     select network in "${endpoint_array[@]}"; do
         if [ -n "$network" ]; then
             # Extract the value of the selected key from the environment variables
-            RPC_URL=$(awk -v key="$network" -F' *= *' '$1 == key {gsub(/"/, "", $2); print $2}' foundry.toml | sed 's/\${//;s/}//')
-            RPC_URL=$(get_env_value "$RPC_URL")
-            echo $RPC_URL
+            RPC_URL=$(awk -v key="$network" -F' *= *' '$1 == key {gsub(/"/, "", $2); print $2; exit}' foundry.toml)
+
+            # Check if the value contains ${} pattern
+            if [[ "$RPC_URL" =~ \$\{.*\} ]]; then
+                RPC_URL=$(echo "$RPC_URL" | sed 's/\${//;s/}//') 
+                RPC_URL=$(get_env_value "$RPC_URL")
+            fi
             break
         else
-            echo "Invalid selection."
+            echo "Invalid selection. Please try again."
         fi
     done
     echo
+
+    #
+    # Create missing json deployment file
+    #
 
     file="./deployment/"$network".json"
 
@@ -40,14 +57,21 @@ while true; do
     fi
     echo
 
-    echo "Select a script"
+    #
+    # Select a script from ./script/deploy/
+    #
 
     files=("$script_directory"/*)
 
+    echo "Select a script"
     select script_name in "${files[@]}"; do
         break
     done
     echo
+
+    #
+    # Confirmation
+    #
 
     echo "Configuration:" 
     echo "  RPC: $RPC_URL" 
@@ -63,7 +87,16 @@ while true; do
     done
     echo
 
+    #
+    # Deployment
+    #
+
     make deploy SCRIPT_NAME=$script_name RPC=$RPC_URL NETWORK=$network
+
+
+    #
+    # Repeat
+    #
 
     echo "Deploy Something else?"
     select answer in "yes" "no"; do

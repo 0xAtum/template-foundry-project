@@ -16,7 +16,6 @@ contract HelloWorldScript is BaseScript {
    * Tips: As the config is set, to avoid any confusion, I recommend to add a prefix XX_<NAME>
    * That way you should never have an unexpected behavior while converting from json to struct.
    */
-
   struct Config {
     address owner;
     uint256 exampleInt;
