@@ -84,6 +84,11 @@ Then when you run `make coverage-output`, it will generate a file that Coverage 
 You will see in red the code that isn't being tested by your tests.
 
 ## How to deploy
+### Easy way
+Use `./deploy.sh`. It uses foundry.toml `[rpc_endpoints]` and `.env`
+
+### Manual way
+
     deploy :; export IS_SIMULATION=false && $(FORGE_CLEAN) && forge script $(FILEPATH) \
     --rpc-url $(RPC) --sig "run(string)" $(NETWORK) --broadcast --verify -vvvv $(EXTRA)
 
