@@ -38,6 +38,25 @@ contract BaseTest is Test, MockERC20ABI {
     vm.startPrank(msgSender, msg.sender);
   }
 
+  function generateAddress() internal returns (address) {
+    return generateAddress("Quick Generated Address", false, 0);
+  }
+
+  function generateAddress(uint256 _balance) internal returns (address) {
+    return generateAddress("Quick Generated Address", false, _balance);
+  }
+
+  function generateAddress(string memory _name) internal returns (address) {
+    return generateAddress(_name, false, 0);
+  }
+
+  function generateAddress(string memory _name, uint256 _balance)
+    internal
+    returns (address)
+  {
+    return generateAddress(_name, false, _balance);
+  }
+
   function generateAddress(string memory _name, bool _isContract)
     internal
     returns (address)
