@@ -6,10 +6,7 @@ import { MockERC20ABI } from "../mock/abi/MockERC20ABI.t.sol";
 
 contract BaseTest is Test, MockERC20ABI {
   uint256 internal constant MAX_UINT = type(uint256).max;
-
-  bytes internal constant ERROR_NOT_OWNER = "Ownable: caller is not the owner";
-  bytes internal constant ERROR_ERC20_INVALID_BALANCE =
-    "ERC20: transfer amount exceeds balance";
+  address internal constant ZERO_ADDRESS = address(0);
 
   uint256 private seed;
 
@@ -98,9 +95,5 @@ contract BaseTest is Test, MockERC20ABI {
       emit log_named_uint("    Actual Difference", diff);
       fail();
     }
-  }
-
-  function expectExactEmit() internal {
-    vm.expectEmit(true, true, true, true);
   }
 }
