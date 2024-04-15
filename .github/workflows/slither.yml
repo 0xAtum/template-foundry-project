@@ -19,8 +19,7 @@ jobs:
         with:
           fail-on: none
           slither-config: ./slither-config.json
-          slither-args: --exclude-dependencies --exclude-informational /
-          --checklist --markdown-root ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/
+          slither-args: --exclude-dependencies --exclude-informational --checklist --markdown-root ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/
 
       - name: Create/update checklist as PR comment
         uses: actions/github-script@v6
