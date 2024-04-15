@@ -44,7 +44,7 @@ contract HelloWorldScript is BaseScript {
 
     HelloWorld hello = HelloWorld(contracts[CONTRACT_NAME]);
 
-    vm.startBroadcast(_getDeployer());
+    vm.startBroadcast(_getDeployerPrivateKey());
     {
       if (address(hello) == address(0)) {
         hello = new HelloWorld(config.owner);
