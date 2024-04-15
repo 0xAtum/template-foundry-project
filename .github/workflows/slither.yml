@@ -14,7 +14,7 @@ jobs:
           submodules: recursive
       
       - name: Run Slither
-        uses: crytic/slither-action@v0.3.1
+        uses: crytic/slither-action@v0.3.2
         id: slither
         with:
           fail-on: none
