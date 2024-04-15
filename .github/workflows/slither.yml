@@ -1,46 +1,34 @@
-name: Slither Analysis
-on: [push]
+name: Run Slither Analysis
 
-env:
-  SOLC_VERSION: "0.8.7" 
+on:
+  pull_request:
+    branches: [main]
 
 jobs:
-  analyze:
+  run-slither:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
-
-      - name: creates .secrets
-        env:
-          SECRET_FILE: ${{ secrets.SECRETFILE }}
-        run: echo $SECRET_FILE | base64 --decode > .env
-
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
-
-      - name: Build Foundry Project
-        run: | 
-          forge install 
-          forge build --extra-output abi --extra-output userdoc --extra-output devdoc --extra-output evm.methodIdentifiers --force
-
-      - uses: crytic/slither-action@main
-        continue-on-error: true
+      
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.2
         id: slither
         with:
-          target: ./src/main
+          fail-on: none
           slither-config: ./slither-config.json
-          solc-version: ${{env.SOLC_VERSION}}
-          slither-version: 0.8.3
-          sarif: results.sarif
+          slither-args: --exclude-dependencies --exclude-informational --checklist --markdown-root ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/
 
-      # Require Github entreprise or public repo
-      # - name: Upload SARIF file for core
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   id: upload-1
-      #   with:
-      #     sarif_file: ${{ steps.slither.outputs.sarif }}
+      - name: Create/update checklist as PR comment
+        uses: actions/github-script@v6
+        env:
+          REPORT: ${{ steps.slither.outputs.stdout }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const script = require('.github/scripts/comment')
+            const header = '# Slither report'
+            const body = process.env.REPORT
+            await script({ github, context, header, body })

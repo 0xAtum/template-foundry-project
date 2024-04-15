@@ -1,5 +1,4 @@
 {
-	"compile_force_framework": "solc",
 	"hardhat_cache_directory": "hardhat/cache",
 	"hardhat_artifacts_directory": "hardhat/artifacts",
 	"detectors_to_exclude": "naming-convention,similar-names",

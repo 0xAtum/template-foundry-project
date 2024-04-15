@@ -1,5 +1,6 @@
 [profile.default]
 fs_permissions = [{ access = "read-write", path = "./"}]
+solc = '0.8.25'
 src = 'src'
 test = 'test'
 out = 'out'
