@@ -3,6 +3,18 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 import { strings } from "./utils/strings.sol";
+import { Create2 } from "./utils/Create2.sol";
+
+interface ICREATE3Factory {
+  function deploy(bytes32 salt, bytes memory creationCode)
+    external
+    payable
+    returns (address deployed);
+  function getDeployed(address deployer, bytes32 salt)
+    external
+    view
+    returns (address deployed);
+}
 
 contract BaseScript is Script {
   using strings for string;
@@ -30,8 +42,94 @@ contract BaseScript is Script {
   }
 
   /**
+   * _tryDeployContractDeterministic() Deploy Contract using Create3 Factory
+   * @param _factory address of CREATE3 Factory e.g: https://github.com/ZeframLou/create3-factory?tab=readme-ov-file#deployments
+   * @param _name Name that it will be saved under
+   * @param _salt Salt of the contract
+   * @param _creationCode type(MyContract).creationCode
+   * @param _args abi.encode(...args...)
+   * @return contract_ Contract Address
+   * @return isAlreadyExisting_ If it was already deployed or not
+   */
+  function _tryDeployContractDeterministic(
+    address _factory,
+    string memory _name,
+    bytes32 _salt,
+    bytes memory _creationCode,
+    bytes memory _args
+  ) internal returns (address contract_, bool isAlreadyExisting_) {
+    contract_ = contracts[_name];
+    if (address(contract_) != address(0)) return (contract_, true);
+
+    vm.broadcast(_getDeployerPrivateKey());
+    contract_ =
+      ICREATE3Factory(_factory).deploy(_salt, abi.encodePacked(_creationCode, _args));
+
+    _saveDeployment(_name, contract_);
+    return (contract_, false);
+  }
+
+  /**
+   * _tryDeployContractCREATE2() Deploy Contract using Create2
+   * @param _name Name that it will be saved under
+   * @param _salt Salt of the contract
+   * @param _creationCode type(MyContract).creationCode
+   * @param _args abi.encode(...args...)
+   * @return contract_ Contract Address
+   * @return isAlreadyExisting_ If it was already deployed or not
+   * @dev `_salt` can not be used twice for the same bytecode
+   */
+  function _tryDeployContractCREATE2(
+    string memory _name,
+    bytes32 _salt,
+    bytes memory _creationCode,
+    bytes memory _args
+  ) internal returns (address contract_, bool isAlreadyExisting_) {
+    contract_ = contracts[_name];
+    if (address(contract_) != address(0)) return (contract_, true);
+
+    vm.broadcast(_getDeployerPrivateKey());
+    contract_ = Create2.deploy(0, _salt, abi.encodePacked(_creationCode, _args));
+
+    _saveDeployment(_name, contract_);
+
+    return (contract_, false);
+  }
+
+  /**
+   * _tryDeployContract() Deploy Contract using Create
+   * @param _name Name that it will be saved under
+   * @param _creationCode type(MyContract).creationCode
+   * @param _args abi.encode(...args...)
+   * @return contract_ Contract Address
+   * @return isAlreadyExisting_ If it was already deployed or not
+   */
+  function _tryDeployContract(
+    string memory _name,
+    uint256 _amount,
+    bytes memory _creationCode,
+    bytes memory _args
+  ) internal returns (address contract_, bool isAlreadyExisting_) {
+    contract_ = contracts[_name];
+    if (address(contract_) != address(0)) return (contract_, true);
+
+    bytes memory _code = abi.encodePacked(_creationCode, _args);
+
+    vm.broadcast(_getDeployerPrivateKey());
+    assembly {
+      contract_ := create(_amount, add(_code, 0x20), mload(_code))
+    }
+
+    require(contract_ != address(0), "deploy failed");
+
+    _saveDeployment(_name, contract_);
+    return (contract_, false);
+  }
+
+  /**
    * @notice _getNetwork return the .env variable DEPLOY_NETWORK.
-   * @dev For a better experience, DEPLOY_NETWORK should be defined via _setNetwork(string memory _network) and not .env
+   * @dev For a better experience, DEPLOY_NETWORK should be defined via _setNetwork(string memory _network) and not
+   * .env
    */
   function _getNetwork() internal view returns (string memory) {
     return vm.envString(ENV_DEPLOY_NETWORK);
@@ -42,7 +140,8 @@ contract BaseScript is Script {
    * @param _contractName the name of the contract (what will be shown inside the /deployments/ file)
    * @param _contractAddress the address of the contract
    * @dev If the `_contractName` already exists, it will not save it again
-   * @dev Simulation broadcast will also save inside the deployments file. I haven't find a way to detect simulations yet
+   * @dev Simulation broadcast will also save inside the deployments file. I haven't find a way to detect simulations
+   * yet
    */
   function _saveDeployment(string memory _contractName, address _contractAddress)
     internal
@@ -108,11 +207,15 @@ contract BaseScript is Script {
   }
 
   /**
-   * @notice _getDeployer - Get the deployer with the private key inside .env
-   * @return deployerAddress the deployer address in uint256 format
+   * @notice _getDeployerPrivateKey - Get the deployer with the private key inside .env
+   * @return deployerPrivateKey deployer private key
    */
-  function _getDeployer() internal view returns (uint256) {
+  function _getDeployerPrivateKey() internal view returns (uint256) {
     return vm.envUint(ENV_PRIVATE_KEY);
+  }
+
+  function _getDeployerAddress() internal view returns (address) {
+    return vm.addr(_getDeployerPrivateKey());
   }
 
   /**
