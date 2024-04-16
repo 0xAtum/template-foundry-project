@@ -96,4 +96,8 @@ contract BaseTest is Test, MockERC20ABI {
       fail();
     }
   }
+
+  function expectExactEmit() internal {
+    vm.expectEmit(true, true, true, true);
+  }
 }
