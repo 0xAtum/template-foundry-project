@@ -147,7 +147,7 @@ contract BaseScript is Script {
     internal
   {
     vm.label(_contractAddress, _contractName);
-    // if (_isSimulation()) return;
+    if (_isSimulation()) return;
 
     string memory json = "NewDeployment";
     string memory insertData;
