@@ -147,7 +147,7 @@ contract BaseScript is Script {
     internal
   {
     vm.label(_contractAddress, _contractName);
-    if (_isSimulation()) return;
+    // if (_isSimulation()) return;
 
     string memory json = "NewDeployment";
     string memory insertData;
@@ -158,10 +158,7 @@ contract BaseScript is Script {
     string memory currentData = vm.readFile(_getDeploymentPath(_getNetwork()));
     strings.slice memory slicedCurrentData = currentData.toSlice();
 
-    if (
-      slicedCurrentData.contains(_contractName.toSlice())
-        || slicedCurrentData.contains(string(abi.encodePacked(_contractAddress)).toSlice())
-    ) {
+    if (contracts[_contractName] != address(0)) {
       console.log(_contractName, "Already exists");
       return;
     }
@@ -174,6 +171,8 @@ contract BaseScript is Script {
     }
 
     vm.writeJson(insertData, _getDeploymentPath(_getNetwork()));
+
+    contracts[_contractName] = _contractAddress;
   }
 
   function _addContractToString(string memory _currentData, string memory _contractData)
