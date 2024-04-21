@@ -23,6 +23,7 @@ jobs:
           slither-args: --exclude-dependencies --exclude-informational --checklist --markdown-root ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}/
 
       - name: Create/update checklist as PR comment
+        continue-on-error: true
         uses: actions/github-script@v6
         env:
           REPORT: ${{ steps.slither.outputs.stdout }}
