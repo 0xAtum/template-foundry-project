@@ -5,6 +5,8 @@ import "../base/BaseTest.t.sol";
 import { HelloWorld } from "src/HelloWorld.sol";
 
 contract HelloWorldTest is BaseTest {
+  // The generateAddress in the contract parameters is elegant, but be warned. If you have too many of these,
+  // you will run into a stack too deep, even with `via_ir` on. So it's better to generate them in setUp().
   address private owner = generateAddress("Owner", false);
   address private mockContract = generateAddress("ContractA", true);
 

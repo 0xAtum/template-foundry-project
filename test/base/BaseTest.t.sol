@@ -61,6 +61,14 @@ contract BaseTest is Test, MockERC20ABI {
     return generateAddress(_name, _isContract, 0);
   }
 
+  /**
+   * @notice Generate a new address
+   * @param _name Name that you will see in your terminal
+   * @param _isContract Adds bytes code to
+   * @param _ethBalance Set the initial balance
+   * @dev The generateAddress in the contract parameters is elegant, but be warned. If you have too many of these,
+   *  you will run into a stack too deep on build, even with `via_ir` on. So it's better to generate them in setUp().
+   */
   function generateAddress(string memory _name, bool _isContract, uint256 _ethBalance)
     internal
     returns (address newAddress_)
