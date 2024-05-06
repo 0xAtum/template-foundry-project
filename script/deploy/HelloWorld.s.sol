@@ -21,9 +21,11 @@ contract HelloWorldScript is BaseScript {
     uint256 exampleInt;
     string exampleString;
     address ownerTwo;
+    bool isTestnet;
   }
 
   string private constant CONTRACT_NAME = "HelloWorld";
+  uint88 private constant HELLO_WORLD_SEED_ID = 1;
 
   function run() external {
     string memory file = _getConfig(CONTRACT_NAME);
@@ -41,13 +43,22 @@ contract HelloWorldScript is BaseScript {
 
     _loadContracts();
 
-    bytes32 salt =
-      bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(uint88(1982))));
+    address helloWorldAddress;
 
-    (address helloAddress,) = _tryDeployContractDeterministic(
-      CONTRACT_NAME, salt, type(HelloWorld).creationCode, abi.encode(config.owner)
-    );
+    if (config.isTestnet) {
+      (helloWorldAddress,) = _tryDeployContract(
+        CONTRACT_NAME, 0, type(HelloWorld).creationCode, abi.encode(config.owner)
+      );
+    } else {
+      (helloWorldAddress,) = _tryDeployContractDeterministic(
+        CONTRACT_NAME,
+        _generateSeed(HELLO_WORLD_SEED_ID),
+        type(HelloWorld).creationCode,
+        abi.encode(config.owner)
+      );
+    }
 
-    HelloWorld hello = HelloWorld(helloAddress);
+    HelloWorld hello = HelloWorld(helloWorldAddress);
+    console.log(hello.testMe());
   }
 }

@@ -35,6 +35,12 @@ contract BaseScript is Script {
     vm.setEnv(ENV_DEPLOY_NETWORK, _network);
   }
 
+  //More info: https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912
+  function _generateSeed(uint88 _id) internal view returns (bytes32) {
+    if (_id == 0) revert("`_id` cannot be zero for seed");
+    return bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(_id)));
+  }
+
   /**
    * _tryDeployContractDeterministic() Deploy Contract using Create3 Factory
    * @param _name Name that it will be saved under
