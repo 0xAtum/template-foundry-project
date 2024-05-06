@@ -25,8 +25,7 @@ contract HelloWorldScript is BaseScript {
 
   string private constant CONTRACT_NAME = "HelloWorld";
 
-  function run(string memory _network) external {
-    _setNetwork(_network);
+  function run() external {
     string memory file = _getConfig(CONTRACT_NAME);
 
     Config memory config =
@@ -42,15 +41,13 @@ contract HelloWorldScript is BaseScript {
 
     _loadContracts();
 
-    HelloWorld hello = HelloWorld(contracts[CONTRACT_NAME]);
+    bytes32 salt =
+      bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(uint88(1982))));
 
-    vm.startBroadcast(_getDeployerPrivateKey());
-    {
-      if (address(hello) == address(0)) {
-        hello = new HelloWorld(config.owner);
-        _saveDeployment(CONTRACT_NAME, address(hello));
-      }
-    }
-    vm.stopBroadcast();
+    (address helloAddress,) = _tryDeployContractDeterministic(
+      CONTRACT_NAME, salt, type(HelloWorld).creationCode, abi.encode(config.owner)
+    );
+
+    HelloWorld hello = HelloWorld(helloAddress);
   }
 }

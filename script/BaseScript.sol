@@ -4,17 +4,8 @@ pragma solidity ^0.8.0;
 import "forge-std/Script.sol";
 import { strings } from "./utils/strings.sol";
 import { Create2 } from "./utils/Create2.sol";
-
-interface ICREATE3Factory {
-  function deploy(bytes32 salt, bytes memory creationCode)
-    external
-    payable
-    returns (address deployed);
-  function getDeployed(address deployer, bytes32 salt)
-    external
-    view
-    returns (address deployed);
-}
+import { ICreateX } from "./utils/ICreateX.sol";
+import "./Chains.sol";
 
 contract BaseScript is Script {
   using strings for string;
@@ -24,6 +15,9 @@ contract BaseScript is Script {
     address contractAddress;
     string contractName;
   }
+
+  ICreateX private constant CREATE_X_FACTORY =
+    ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed);
 
   string private constant PATH_CONFIG = "/script/config/";
   string private constant ENV_PRIVATE_KEY = "DEPLOYER_PRIVATE_KEY";
@@ -43,7 +37,6 @@ contract BaseScript is Script {
 
   /**
    * _tryDeployContractDeterministic() Deploy Contract using Create3 Factory
-   * @param _factory address of CREATE3 Factory e.g: https://github.com/ZeframLou/create3-factory?tab=readme-ov-file#deployments
    * @param _name Name that it will be saved under
    * @param _salt Salt of the contract
    * @param _creationCode type(MyContract).creationCode
@@ -52,7 +45,6 @@ contract BaseScript is Script {
    * @return isAlreadyExisting_ If it was already deployed or not
    */
   function _tryDeployContractDeterministic(
-    address _factory,
     string memory _name,
     bytes32 _salt,
     bytes memory _creationCode,
@@ -63,7 +55,7 @@ contract BaseScript is Script {
 
     vm.broadcast(_getDeployerPrivateKey());
     contract_ =
-      ICREATE3Factory(_factory).deploy(_salt, abi.encodePacked(_creationCode, _args));
+      CREATE_X_FACTORY.deployCreate3(_salt, abi.encodePacked(_creationCode, _args));
 
     _saveDeployment(_name, contract_);
     return (contract_, false);
@@ -132,7 +124,7 @@ contract BaseScript is Script {
    * .env
    */
   function _getNetwork() internal view returns (string memory) {
-    return vm.envString(ENV_DEPLOY_NETWORK);
+    return Chains.getChainName();
   }
 
   /**
