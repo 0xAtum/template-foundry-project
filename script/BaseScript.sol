@@ -4,17 +4,8 @@ pragma solidity ^0.8.0;
 import "forge-std/Script.sol";
 import { strings } from "./utils/strings.sol";
 import { Create2 } from "./utils/Create2.sol";
-
-interface ICREATE3Factory {
-  function deploy(bytes32 salt, bytes memory creationCode)
-    external
-    payable
-    returns (address deployed);
-  function getDeployed(address deployer, bytes32 salt)
-    external
-    view
-    returns (address deployed);
-}
+import { ICreateX } from "./utils/ICreateX.sol";
+import "./Chains.sol";
 
 contract BaseScript is Script {
   using strings for string;
@@ -25,25 +16,26 @@ contract BaseScript is Script {
     string contractName;
   }
 
+  ICreateX private constant CREATE_X_FACTORY =
+    ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed);
+
   string private constant PATH_CONFIG = "/script/config/";
   string private constant ENV_PRIVATE_KEY = "DEPLOYER_PRIVATE_KEY";
+  string private constant ENV_PRIVATE_TESTNET_KEY = "DEPLOYER_PRIVATE_TESTNET_KEY";
   string private constant ENV_DEPLOY_NETWORK = "DEPLOY_NETWORK";
   string private constant DEPLOY_HISTORY_PATH = "/deployment/";
   string private constant KEY_CONTRACT_NAME = "contractName";
 
   mapping(string => address) internal contracts;
 
-  /**
-   * @notice _setNetwork define env value of DEPLOY_NETWORK
-   * @dev it should be the first function called inside run(string memory _network)
-   */
-  function _setNetwork(string memory _network) internal {
-    vm.setEnv(ENV_DEPLOY_NETWORK, _network);
+  //More info: https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912
+  function _generateSeed(uint88 _id) internal view returns (bytes32) {
+    if (_id == 0) revert("`_id` cannot be zero for seed");
+    return bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(_id)));
   }
 
   /**
    * _tryDeployContractDeterministic() Deploy Contract using Create3 Factory
-   * @param _factory address of CREATE3 Factory e.g: https://github.com/ZeframLou/create3-factory?tab=readme-ov-file#deployments
    * @param _name Name that it will be saved under
    * @param _salt Salt of the contract
    * @param _creationCode type(MyContract).creationCode
@@ -52,7 +44,6 @@ contract BaseScript is Script {
    * @return isAlreadyExisting_ If it was already deployed or not
    */
   function _tryDeployContractDeterministic(
-    address _factory,
     string memory _name,
     bytes32 _salt,
     bytes memory _creationCode,
@@ -63,7 +54,7 @@ contract BaseScript is Script {
 
     vm.broadcast(_getDeployerPrivateKey());
     contract_ =
-      ICREATE3Factory(_factory).deploy(_salt, abi.encodePacked(_creationCode, _args));
+      CREATE_X_FACTORY.deployCreate3(_salt, abi.encodePacked(_creationCode, _args));
 
     _saveDeployment(_name, contract_);
     return (contract_, false);
@@ -127,12 +118,10 @@ contract BaseScript is Script {
   }
 
   /**
-   * @notice _getNetwork return the .env variable DEPLOY_NETWORK.
-   * @dev For a better experience, DEPLOY_NETWORK should be defined via _setNetwork(string memory _network) and not
-   * .env
+   * @notice _getNetwork the current chain network's name.
    */
   function _getNetwork() internal view returns (string memory) {
-    return vm.envString(ENV_DEPLOY_NETWORK);
+    return Chains.getChainName();
   }
 
   /**
@@ -205,16 +194,20 @@ contract BaseScript is Script {
     return vm.readFile(string.concat(inputDir, file));
   }
 
+  function _getDeployerAddress() internal view returns (address) {
+    return vm.addr(_getDeployerPrivateKey());
+  }
   /**
    * @notice _getDeployerPrivateKey - Get the deployer with the private key inside .env
    * @return deployerPrivateKey deployer private key
    */
+
   function _getDeployerPrivateKey() internal view returns (uint256) {
-    return vm.envUint(ENV_PRIVATE_KEY);
+    return vm.envUint(_isTestnet() ? ENV_PRIVATE_TESTNET_KEY : ENV_PRIVATE_KEY);
   }
 
-  function _getDeployerAddress() internal view returns (address) {
-    return vm.addr(_getDeployerPrivateKey());
+  function _isTestnet() internal view returns (bool) {
+    return Chains.isTestnet();
   }
 
   /**
@@ -285,6 +278,11 @@ contract BaseScript is Script {
   }
 
   function _isSimulation() internal view returns (bool) {
-    return vm.envBool("IS_SIMULATION");
+    try vm.envBool("IS_SIMULATION") returns (bool simulation) {
+      return simulation;
+    } catch {
+      console2.log("IS_SIMULATION IS MISSING -- Simulation sets to false");
+      return false;
+    }
   }
 }
