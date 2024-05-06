@@ -283,6 +283,11 @@ contract BaseScript is Script {
   }
 
   function _isSimulation() internal view returns (bool) {
-    return vm.envBool("IS_SIMULATION");
+    try vm.envBool("IS_SIMULATION") returns (bool simulation) {
+      return simulation;
+    } catch {
+      console2.log("IS_SIMULATION IS MISSING -- Simulation sets to false");
+      return false;
+    }
   }
 }
