@@ -21,19 +21,12 @@ contract BaseScript is Script {
 
   string private constant PATH_CONFIG = "/script/config/";
   string private constant ENV_PRIVATE_KEY = "DEPLOYER_PRIVATE_KEY";
+  string private constant ENV_PRIVATE_TESTNET_KEY = "DEPLOYER_PRIVATE_TESTNET_KEY";
   string private constant ENV_DEPLOY_NETWORK = "DEPLOY_NETWORK";
   string private constant DEPLOY_HISTORY_PATH = "/deployment/";
   string private constant KEY_CONTRACT_NAME = "contractName";
 
   mapping(string => address) internal contracts;
-
-  /**
-   * @notice _setNetwork define env value of DEPLOY_NETWORK
-   * @dev it should be the first function called inside run(string memory _network)
-   */
-  function _setNetwork(string memory _network) internal {
-    vm.setEnv(ENV_DEPLOY_NETWORK, _network);
-  }
 
   //More info: https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912
   function _generateSeed(uint88 _id) internal view returns (bytes32) {
@@ -125,9 +118,7 @@ contract BaseScript is Script {
   }
 
   /**
-   * @notice _getNetwork return the .env variable DEPLOY_NETWORK.
-   * @dev For a better experience, DEPLOY_NETWORK should be defined via _setNetwork(string memory _network) and not
-   * .env
+   * @notice _getNetwork the current chain network's name.
    */
   function _getNetwork() internal view returns (string memory) {
     return Chains.getChainName();
@@ -203,16 +194,20 @@ contract BaseScript is Script {
     return vm.readFile(string.concat(inputDir, file));
   }
 
+  function _getDeployerAddress() internal view returns (address) {
+    return vm.addr(_getDeployerPrivateKey());
+  }
   /**
    * @notice _getDeployerPrivateKey - Get the deployer with the private key inside .env
    * @return deployerPrivateKey deployer private key
    */
+
   function _getDeployerPrivateKey() internal view returns (uint256) {
-    return vm.envUint(ENV_PRIVATE_KEY);
+    return vm.envUint(_isTestnet() ? ENV_PRIVATE_TESTNET_KEY : ENV_PRIVATE_KEY);
   }
 
-  function _getDeployerAddress() internal view returns (address) {
-    return vm.addr(_getDeployerPrivateKey());
+  function _isTestnet() internal view returns (bool) {
+    return Chains.isTestnet();
   }
 
   /**

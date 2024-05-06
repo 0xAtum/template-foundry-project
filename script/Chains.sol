@@ -63,4 +63,19 @@ library Chains {
 
     return "localhost";
   }
+
+  function isTestnet() internal view returns (bool) {
+    uint256 chainId = block.chainid;
+
+    if (
+      chainId == 11_155_111 || chainId == 17_000 || chainId == 97 || chainId == 11_155_420
+        || chainId == 421_614 || chainId == 80_002 || chainId == 1442 || chainId == 4002
+        || chainId == 43_113 || chainId == 10_200 || chainId == 1287 || chainId == 44_787
+        || chainId == 1_313_161_555 || chainId == 1_666_700_000 || chainId == 123
+        || chainId == 338 || chainId == 9000 || chainId == 2880 || chainId == 777
+        || chainId == 553 || chainId == 121
+    ) return true;
+
+    return false;
+  }
 }

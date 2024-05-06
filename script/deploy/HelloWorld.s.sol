@@ -21,7 +21,6 @@ contract HelloWorldScript is BaseScript {
     uint256 exampleInt;
     string exampleString;
     address ownerTwo;
-    bool isTestnet;
   }
 
   string private constant CONTRACT_NAME = "HelloWorld";
@@ -45,7 +44,7 @@ contract HelloWorldScript is BaseScript {
 
     address helloWorldAddress;
 
-    if (config.isTestnet) {
+    if (_isTestnet()) {
       (helloWorldAddress,) = _tryDeployContract(
         CONTRACT_NAME, 0, type(HelloWorld).creationCode, abi.encode(config.owner)
       );
