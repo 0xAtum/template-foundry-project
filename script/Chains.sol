@@ -12,6 +12,7 @@ library Chains {
     if (chainId == 137) return "polygon";
     if (chainId == 1101) return "polygonzkEVM";
     if (chainId == 250) return "fantom";
+    if (chainId == 252) return "fraxtal";
     if (chainId == 43_114) return "avalanche";
     if (chainId == 100) return "gnosis";
     if (chainId == 1285) return "moonriver";
