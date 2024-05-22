@@ -90,7 +90,7 @@ Use `./deploy.sh`. It uses foundry.toml `[rpc_endpoints]` and `.env`
 ### Manual way
 
     deploy :; export IS_SIMULATION=false && $(FORGE_CLEAN) && forge script $(FILEPATH) \
-    --rpc-url $(RPC) --sig "run(string)" $(NETWORK) --broadcast --verify -vvvv $(EXTRA)
+    --rpc-url $(RPC) --sig "run()" --broadcast --verify -vvvv $(EXTRA)
 
 **IS_SIMULATION** = Right now we don't have any variable to know if it's simulate-deploy, at least I didn't find it. So I use this env variable so we don't save the deployed contracts during this simulation.
 
@@ -117,7 +117,7 @@ Example
 Same as the above, but with `simulate-deploy`
 
     simulate-deploy :; export IS_SIMULATION=true && forge script $(SCRIPT_NAME) \
-    --rpc-url $(RPC) --sig "run(string)" $(NETWORK) -vvvv $(EXTRA)
+    --rpc-url $(RPC) --sig "run()" -vvvv $(EXTRA)
 
 ## Commands script
 
