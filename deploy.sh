@@ -13,7 +13,7 @@ while true; do
         select use_simulation in "yes" "no"; do
             case $use_simulation in
                 yes ) is_simulation=true; break;;
-                no ) break;;
+                no ) is_simulation=false; break;;
             esac
         done
     echo
