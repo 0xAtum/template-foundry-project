@@ -11,8 +11,8 @@ update:; forge update
 remappings:; forge remappings > remappings.txt
 
 # commands
-coverage :; forge coverage 
-coverage-output :; forge coverage --report lcov
+coverage :; export FOUNDRY_PROFILE=unit && forge coverage 
+coverage-output :; export FOUNDRY_PROFILE=unit && forge coverage --report lcov
 build  :; forge build --force 
 clean  :; forge clean
 
