@@ -28,7 +28,8 @@ contract BaseScript is Script {
 
   mapping(string => address) internal contracts;
 
-  //More info: https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912
+  //More info:
+  // https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912
   function _generateSeed(uint88 _id) internal view returns (bytes32) {
     if (_id == 0) revert("`_id` cannot be zero for seed");
     return bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(_id)));
@@ -126,10 +127,12 @@ contract BaseScript is Script {
 
   /**
    * @notice _saveDeployment - Get config file from "/script/config/`_fileName`.json
-   * @param _contractName the name of the contract (what will be shown inside the /deployments/ file)
+   * @param _contractName the name of the contract (what will be shown inside the
+   * /deployments/ file)
    * @param _contractAddress the address of the contract
    * @dev If the `_contractName` already exists, it will not save it again
-   * @dev Simulation broadcast will also save inside the deployments file. I haven't find a way to detect simulations
+   * @dev Simulation broadcast will also save inside the deployments file. I haven't find
+   * a way to detect simulations
    * yet
    */
   function _saveDeployment(string memory _contractName, address _contractAddress)
@@ -186,7 +189,8 @@ contract BaseScript is Script {
   /**
    * @notice _getConfig - Get config file from "/script/config/`_fileName`.json
    * @param _fileName the name of the config file (without extension)
-   * @return fileData_ Raw data of the file. use vm.parseJson(fileData_, jsonKey) to get the json encoded data
+   * @return fileData_ Raw data of the file. use vm.parseJson(fileData_, jsonKey) to get
+   * the json encoded data
    */
   function _getConfig(string memory _fileName) internal view returns (string memory) {
     string memory inputDir = string.concat(vm.projectRoot(), PATH_CONFIG);
@@ -211,7 +215,8 @@ contract BaseScript is Script {
   }
 
   /**
-   * @notice _loadContracts - Loads the deployed contracts from a network inside the mapping "contracts"
+   * @notice _loadContracts - Loads the deployed contracts from a network inside the
+   * mapping "contracts"
    */
   function _loadContracts() internal {
     if (_isSimulation()) return;
