@@ -45,7 +45,9 @@ If you used [Template Solidity Project](https://github.com/0xAtum/template-solid
 Then use the command `make tests` to be sure everything is good to go
 
 ## Getting Started
-You'll find example contracts in
+Type `make` into the terminal to install project dependencies.
+
+You'll find examples in
 - `src/*`
 - `script/config/*` 
 - `script/deploy/*` 
