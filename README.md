@@ -44,6 +44,15 @@ If you used [Template Solidity Project](https://github.com/0xAtum/template-solid
 
 Then use the command `make tests` to be sure everything is good to go
 
+## Getting Started
+You'll find example contracts in
+- `src/*`
+- `script/config/*` 
+- `script/deploy/*` 
+- `test/e2e/HelloWorldE2E.t.sol`
+- `test/unit/HelloWorld.t.sol`
+
+Feel free to remove them when you are ready to start your project.
   
 
 ## Folder Strucutre
