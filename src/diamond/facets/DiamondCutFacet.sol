@@ -50,8 +50,4 @@ contract DiamondCutFacet is IDiamondCut {
     emit DiamondCut(_diamondCut, _init, _calldata);
     LibDiamond.initializeDiamondCut(_init, _calldata);
   }
-
-  function version() external view override returns (uint256) {
-    return 182;
-  }
 }
