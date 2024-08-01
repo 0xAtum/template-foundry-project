@@ -67,11 +67,16 @@ while true; do
     # Select a script from ./script/deploy/
     #
 
-    files=("$script_directory"/*)
+    files=($(find "$script_directory"/ -type f))
 
-    echo "Select a script"
+    echo "Select a script:"
     select script_name in "${files[@]}"; do
-        break
+        if [[ -n "$script_name" ]]; then
+            echo "You selected: $script_name"
+            break
+        else
+            echo "Invalid selection, please try again."
+        fi
     done
     echo
 

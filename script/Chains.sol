@@ -79,4 +79,8 @@ library Chains {
 
     return false;
   }
+
+  function isLocal() internal view returns (bool) {
+    return block.chainid == 31_337;
+  }
 }

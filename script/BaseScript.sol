@@ -21,6 +21,7 @@ contract BaseScript is Script {
 
   string private constant PATH_CONFIG = "/script/config/";
   string private constant ENV_PRIVATE_KEY = "DEPLOYER_PRIVATE_KEY";
+  string private constant ENV_PRIVATE_LOCAL_KEY = "DEPLOYER_PRIVATE_LOCAL_KEY";
   string private constant ENV_PRIVATE_TESTNET_KEY = "DEPLOYER_PRIVATE_TESTNET_KEY";
   string private constant ENV_DEPLOY_NETWORK = "DEPLOY_NETWORK";
   string private constant DEPLOY_HISTORY_PATH = "/deployment/";
@@ -207,10 +208,18 @@ contract BaseScript is Script {
    */
 
   function _getDeployerPrivateKey() internal view returns (uint256) {
+    if (_isLocal()) {
+      return vm.envUint(ENV_PRIVATE_LOCAL_KEY);
+    }
+
     return vm.envUint(_isTestnet() ? ENV_PRIVATE_TESTNET_KEY : ENV_PRIVATE_KEY);
   }
 
   function _isTestnet() internal view returns (bool) {
+    return Chains.isTestnet();
+  }
+
+  function _isLocal() internal view returns (bool) {
     return Chains.isTestnet();
   }
 

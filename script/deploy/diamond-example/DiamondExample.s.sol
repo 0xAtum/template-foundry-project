@@ -6,31 +6,24 @@ import { DiamondHelper } from "script/utils/diamond/DiamondHelper.sol";
 import { IDiamondCut } from "script/utils/diamond/IDiamondCut.sol";
 import { CustomFacetScript } from "./CustomFacet.s.sol";
 
+import { ExampleDiamondApp } from "src/ExampleDiamondApp.sol";
+import { DiamondCutFacet } from "src/diamond/facets/DiamondCutFacet.sol";
+import { DiamondLoupeFacet } from "src/diamond/facets/DiamondLoupeFacet.sol";
+
 /**
  * @title DiamondExample
  * @notice The whole idea of DiamondHelper is it uses your interface to fulfill
  * IDiamondCut.FacetCut automatically. If you do not have all your functions in
  * your interface, it will not work.
  */
-contract DiamondExampleContract {
-  constructor(IDiamondCut.FacetCut[] memory _diamondCut) { }
-  //This is an example -- Use the real contract when deploying
-}
-
-contract DiamondCutFacet {
-//This is an example -- Use the real contract when deploying
-}
-
-contract DiamondLoupeFacet {
-//This is an example -- Use the real contract when deploying
-}
-
 contract DiamondExample is BaseScript, DiamondHelper {
   string private constant DIAMOND_CUT = "DiamondCutFacet";
+  string private constant DIAMOND_CUT_INTERFACE = "IDiamondCut";
   string private constant DIAMOND_LOUPE = "DiamondLoupeFacet";
+  string private constant DIAMOND_LOUPE_INTERFACE = "IDiamondLoupe";
 
   function run() external {
-    CustomFacetScript myCustonFacet = new CustomFacetScript();
+    _loadContracts();
     IDiamondCut.FacetCut[] memory facetCuts = new IDiamondCut.FacetCut[](0);
 
     //Deploy Implementation of Core Diamond Proxy (DiamondCutFacet & DiamondLoupeFacet)
@@ -40,15 +33,15 @@ contract DiamondExample is BaseScript, DiamondHelper {
     facetCuts = _concatFacetCuts(facetCuts, _getFacetCutCoreDiamondProxy());
 
     //Deploy Implementation of "MyFacetContract"
-    myCustonFacet.tryToDeploy();
+    // myCustonFacet.tryToDeploy();
 
     //Add Facet Cut of MyFacetContract
-    facetCuts = _concatFacetCuts(facetCuts, myCustonFacet.getFacetCuts());
+    // facetCuts = _concatFacetCuts(facetCuts, myCustonFacet.getFacetCuts());
 
-    _tryDeployContract(
+    (address a,) = _tryDeployContract(
       "DiamondExampleContract",
       0,
-      type(DiamondExampleContract).creationCode,
+      type(ExampleDiamondApp).creationCode,
       abi.encode(facetCuts)
     );
   }
@@ -92,8 +85,8 @@ contract DiamondExample is BaseScript, DiamondHelper {
     interfaces[1] = diamondLoupe;
 
     string[] memory interfaceNames = new string[](2);
-    interfaceNames[0] = "IDiamondCut";
-    interfaceNames[1] = "IDiamondLoupe";
+    interfaceNames[0] = DIAMOND_CUT_INTERFACE;
+    interfaceNames[1] = DIAMOND_LOUPE_INTERFACE;
 
     return _generateAllCuts(interfaceNames, interfaces);
   }
