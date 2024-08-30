@@ -220,7 +220,7 @@ contract BaseScript is Script {
   }
 
   function _isLocal() internal view returns (bool) {
-    return Chains.isTestnet();
+    return Chains.isLocal();
   }
 
   /**
