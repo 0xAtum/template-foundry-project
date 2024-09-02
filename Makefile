@@ -27,5 +27,5 @@ snapshot-fork :; forge snapshot --snap .gas-snapshot-fork $(RPC) $(EXTRA)
 #Analytic Tools
 slither :; slither --config-file ./slither-config.json src/
 
-deploy :; export IS_SIMULATION=false && forge script $(SCRIPT_NAME) --rpc-url $(RPC) --sig "run()" --broadcast --verify -vvvv $(EXTRA)
-simulate-deploy :; export IS_SIMULATION=true && forge script $(SCRIPT_NAME) --rpc-url $(RPC) --sig "run()" -vvvv $(EXTRA)
+deploy :; forge script $(SCRIPT_NAME) --rpc-url $(RPC) --sig "run()" --broadcast --verify -vvvv $(EXTRA)
+simulate-deploy :; forge script $(SCRIPT_NAME) --rpc-url $(RPC) --sig "run()" -vvvv $(EXTRA)

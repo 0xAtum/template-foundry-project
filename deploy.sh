@@ -52,6 +52,8 @@ while true; do
     #
     # Create missing json deployment file
     #
+    
+    mkdir -p "./deployment"
 
     file="./deployment/"$network".json"
 
