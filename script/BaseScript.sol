@@ -8,6 +8,8 @@ import { ICreateX } from "./utils/ICreateX.sol";
 import "./Chains.sol";
 
 abstract contract BaseScript is Script {
+  type CreateXSeed is bytes32;
+
   using strings for string;
   using strings for strings.slice;
 
@@ -34,15 +36,17 @@ abstract contract BaseScript is Script {
 
   //More info:
   // https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912
-  function _generateSeed(uint88 _id) internal view returns (bytes32) {
+  function _generateSeed(uint88 _id) internal view returns (CreateXSeed) {
     if (_id == 0) revert("`_id` cannot be zero for seed");
-    return bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(_id)));
+    return CreateXSeed.wrap(
+      bytes32(abi.encodePacked(_getDeployerAddress(), hex"00", bytes11(_id)))
+    );
   }
 
   /**
    * _tryDeployContractDeterministic() Deploy Contract using Create3 Factory
    * @param _name Name that it will be saved under
-   * @param _salt Salt of the contract
+   * @param _createXSeedFormat Salt of the contract, use _generateSeed() to generate
    * @param _creationCode type(MyContract).creationCode
    * @param _args abi.encode(...args...)
    * @return contract_ Contract Address
@@ -50,7 +54,7 @@ abstract contract BaseScript is Script {
    */
   function _tryDeployContractDeterministic(
     string memory _name,
-    bytes32 _salt,
+    CreateXSeed _createXSeedFormat,
     bytes memory _creationCode,
     bytes memory _args
   ) internal returns (address contract_, bool isAlreadyExisting_) {
@@ -58,8 +62,9 @@ abstract contract BaseScript is Script {
     if (address(contract_) != address(0)) return (contract_, true);
 
     vm.broadcast(_getDeployerPrivateKey());
-    contract_ =
-      CREATE_X_FACTORY.deployCreate3(_salt, abi.encodePacked(_creationCode, _args));
+    contract_ = CREATE_X_FACTORY.deployCreate3(
+      CreateXSeed.unwrap(_createXSeedFormat), abi.encodePacked(_creationCode, _args)
+    );
 
     _saveDeployment(_name, contract_);
     return (contract_, false);
