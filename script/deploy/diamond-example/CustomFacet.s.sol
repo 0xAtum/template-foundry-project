@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "script/BaseScript.sol";
 import { FacetDeployerScript } from "script/utils/diamond/FacetDeployer.sol";
 
 contract MyFacetContract {

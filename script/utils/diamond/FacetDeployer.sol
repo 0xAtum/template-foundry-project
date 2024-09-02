@@ -14,7 +14,7 @@ abstract contract FacetDeployerScript is BaseScript, DiamondHelper {
     FACET_INTERFACE = _facetInterfaceName;
   }
 
-  function run() external {
+  function run() external override {
     _loadContracts();
     tryToDeploy(contracts[FACET_NAME]);
   }

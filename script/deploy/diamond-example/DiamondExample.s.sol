@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import "script/BaseScript.sol";
 import { DiamondHelper } from "script/utils/diamond/DiamondHelper.sol";
 import { IDiamondCut } from "script/utils/diamond/IDiamondCut.sol";
-import { CustomFacetScript } from "./CustomFacet.s.sol";
 
 import { ExampleDiamondApp } from "src/ExampleDiamondApp.sol";
 import { DiamondCutFacet } from "src/diamond/facets/DiamondCutFacet.sol";
@@ -22,7 +21,7 @@ contract DiamondExample is BaseScript, DiamondHelper {
   string private constant DIAMOND_LOUPE = "DiamondLoupeFacet";
   string private constant DIAMOND_LOUPE_INTERFACE = "IDiamondLoupe";
 
-  function run() external {
+  function run() external override {
     _loadContracts();
     IDiamondCut.FacetCut[] memory facetCuts = new IDiamondCut.FacetCut[](0);
 
@@ -44,6 +43,8 @@ contract DiamondExample is BaseScript, DiamondHelper {
       type(ExampleDiamondApp).creationCode,
       abi.encode(facetCuts)
     );
+
+    console.log("DiamondExampleContract deployed at", a);
   }
 
   function _deployCoreFacetOfDiamondProxy()

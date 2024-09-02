@@ -7,7 +7,7 @@ import { Create2 } from "./utils/Create2.sol";
 import { ICreateX } from "./utils/ICreateX.sol";
 import "./Chains.sol";
 
-contract BaseScript is Script {
+abstract contract BaseScript is Script {
   using strings for string;
   using strings for strings.slice;
 
@@ -28,6 +28,9 @@ contract BaseScript is Script {
   string private constant KEY_CONTRACT_NAME = "contractName";
 
   mapping(string => address) internal contracts;
+
+  //Entrypoint for the script
+  function run() external virtual;
 
   //More info:
   // https://github.com/pcaversaccio/createx/blob/776c97635c9d592e8a866e25f15d45b374892cf1/src/CreateX.sol#L873-L912

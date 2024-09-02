@@ -11,10 +11,13 @@ contract HelloWorldScript is BaseScript {
    *
    * In our example
    * Config::owner is the first element, but in the json, it's the second.
-   * But since it starts with "01_", it becomes the first element in the json after the sorting
+   * But since it starts with "01_", it becomes the first element in the json after the
+   * sorting
    *
-   * Tips: As the config is set, to avoid any confusion, I recommend to add a prefix XX_<NAME>
-   * That way you should never have an unexpected behavior while converting from json to struct.
+   * Tips: As the config is set, to avoid any confusion, I recommend to add a prefix
+   * XX_<NAME>
+   * That way you should never have an unexpected behavior while converting from json to
+   * struct.
    */
   struct Config {
     address owner;
@@ -26,7 +29,7 @@ contract HelloWorldScript is BaseScript {
   string private constant CONTRACT_NAME = "HelloWorld";
   uint88 private constant HELLO_WORLD_SEED_ID = 1;
 
-  function run() external {
+  function run() external override {
     string memory file = _getConfig(CONTRACT_NAME);
 
     Config memory config =
