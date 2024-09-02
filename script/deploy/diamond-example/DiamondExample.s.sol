@@ -22,7 +22,7 @@ contract DiamondExample is BaseScript, DiamondHelper {
   string private constant DIAMOND_LOUPE_INTERFACE = "IDiamondLoupe";
 
   function run() external override {
-    _loadContracts();
+    _loadContracts(false);
     IDiamondCut.FacetCut[] memory facetCuts = new IDiamondCut.FacetCut[](0);
 
     //Deploy Implementation of Core Diamond Proxy (DiamondCutFacet & DiamondLoupeFacet)

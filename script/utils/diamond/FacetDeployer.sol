@@ -15,7 +15,7 @@ abstract contract FacetDeployerScript is BaseScript, DiamondHelper {
   }
 
   function run() external override {
-    _loadContracts();
+    _loadContracts(false);
     tryToDeploy(contracts[FACET_NAME]);
   }
 
@@ -26,7 +26,7 @@ abstract contract FacetDeployerScript is BaseScript, DiamondHelper {
   function tryToDeploy(address _cachedContract) public virtual returns (address);
 
   function getFacetCuts() external returns (IDiamondCut.FacetCut[] memory) {
-    _loadContracts();
+    _loadContracts(false);
 
     address facet = contracts[FACET_NAME];
     require(facet != address(0), "Facet not deployed.");
