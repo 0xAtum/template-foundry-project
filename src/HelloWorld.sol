@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+/**
+ * @title HelloWorld
+ * @author 0xRoxas
+ * @notice This is a simple contract to test the deployment script
+ * @custom:export abi
+ */
 contract HelloWorld {
   address public owner;
   uint256 public value;
