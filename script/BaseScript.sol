@@ -30,6 +30,7 @@ abstract contract BaseScript is Script {
   string private constant KEY_CONTRACT_NAME = "contractName";
 
   mapping(string => address) internal contracts;
+  mapping(string => mapping(string => address)) internal contractsOtherNetworks;
 
   //Entrypoint for the script
   function run() external virtual;
@@ -232,8 +233,9 @@ abstract contract BaseScript is Script {
   }
 
   /**
-   * @notice _loadContracts - Loads the deployed contracts from a network inside the
-   * mapping "contracts"
+   * @notice _loadContracts - Loads the deployed contracts from the current network inside
+   * the mapping "contracts"
+   * @param _loadInSimulation If it should load in simulation
    */
   function _loadContracts(bool _loadInSimulation) internal {
     if (!_loadInSimulation && _isSimulation()) return;
@@ -245,6 +247,28 @@ abstract contract BaseScript is Script {
     for (uint256 i = 0; i < length; ++i) {
       cached = deployments[i];
       contracts[cached.contractName] = cached.contractAddress;
+      vm.label(cached.contractAddress, cached.contractName);
+    }
+  }
+
+  /**
+   * @notice _loadOtherContractNetwork - Loads the deployed contracts from a network
+   * inside the mapping "contractsOtherNetworks"
+   * @param _loadInSimulation If it should load in simulation
+   * @param _network the name of the network
+   */
+  function _loadOtherContractNetwork(bool _loadInSimulation, string memory _network)
+    internal
+  {
+    if (!_loadInSimulation && _isSimulation()) return;
+
+    Deployment[] memory deployments = _getDeployedContracts(_network);
+
+    Deployment memory cached;
+    uint256 length = deployments.length;
+    for (uint256 i = 0; i < length; ++i) {
+      cached = deployments[i];
+      contractsOtherNetworks[_network][cached.contractName] = cached.contractAddress;
       vm.label(cached.contractAddress, cached.contractName);
     }
   }
