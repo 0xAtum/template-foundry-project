@@ -85,7 +85,9 @@ library Chains {
         || chainId == 43_113 || chainId == 10_200 || chainId == 1287 || chainId == 44_787
         || chainId == 1_313_161_555 || chainId == 1_666_700_000 || chainId == 123
         || chainId == 338 || chainId == 9000 || chainId == 2880 || chainId == 777
-        || chainId == 553 || chainId == 121
+        || chainId == 553 || chainId == 121 || chainId == 1028 || chainId == 5611
+        || chainId == 5003 || chainId == 1112 || chainId == 300 || chainId == 37_714_555_429
+        || chainId == 204 || chainId == 660_279
     ) return true;
 
     return false;
