@@ -72,83 +72,83 @@ xai = "${RPC_XAI}"
 xaiSepolia = "${RPC_XAI_SEPOLIA}"
 
 [etherscan]
-ethereum = { key = "${ETHERSCAN_KEY}", chain = 1, url = "https://api.etherscan.io/v2/api"}
-sepolia = { key = "${ETHERSCAN_KEY}", chain = 11155111, url = "https://api.etherscan.io/v2/api"}
-holesky = { key = "${ETHERSCAN_KEY}", chain = 17000, url = "https://api.etherscan.io/v2/api"}
+ethereum = { key = "${ETHERSCAN_KEY}", chain = 1 }
+sepolia = { key = "${ETHERSCAN_KEY}", chain = 11155111 }
+holesky = { key = "${ETHERSCAN_KEY}", chain = 17000 }
 #[BSC]
-bsc = { key = "${ETHERSCAN_KEY}", chain = 56, url = "https://api.etherscan.io/v2/api"}
-bscTestnet = { key = "${ETHERSCAN_KEY}", chain = 97, url = "https://api.etherscan.io/v2/api"}
+bsc = { key = "${ETHERSCAN_KEY}", chain = 56 }
+bscTestnet = { key = "${ETHERSCAN_KEY}", chain = 97 }
 #[polygon]
-polygon = { key = "${ETHERSCAN_KEY}", chain = 137, url = "https://api.etherscan.io/v2/api"}
-polygonTestnet = { key = "${ETHERSCAN_KEY}", chain = 80002, url = "https://api.etherscan.io/v2/api"}
+polygon = { key = "${ETHERSCAN_KEY}", chain = 137 }
+polygonTestnet = { key = "${ETHERSCAN_KEY}", chain = 80002 }
 #[zkEVM]
-zkEVM = { key = "${ETHERSCAN_KEY}", chain = 1101, url = "https://api.etherscan.io/v2/api"}
-zkEVMTestnet = { key = "${ETHERSCAN_KEY}", chain = 2442, url = "https://api.etherscan.io/v2/api"}
+zkEVM = { key = "${ETHERSCAN_KEY}", chain = 1101 }
+zkEVMTestnet = { key = "${ETHERSCAN_KEY}", chain = 2442 }
 #[baseScan]
-base = { key = "${ETHERSCAN_KEY}", chain = 8453, url = "https://api.etherscan.io/v2/api"}
-baseTestnet = { key = "${ETHERSCAN_KEY}", chain = 84532, url = "https://api.etherscan.io/v2/api"}
+base = { key = "${ETHERSCAN_KEY}", chain = 8453 }
+baseTestnet = { key = "${ETHERSCAN_KEY}", chain = 84532 }
 #[arbiscan]
-arbitrum = { key = "${ETHERSCAN_KEY}", chain = 42161, url = "https://api.etherscan.io/v2/api"}
-novaArbiscan = { key = "${ETHERSCAN_KEY}", chain = 42170, url = "https://api.etherscan.io/v2/api"}
-arbitrumSepolia = { key = "${ETHERSCAN_KEY}", chain = 421614, url = "https://api.etherscan.io/v2/api"}
+arbitrum = { key = "${ETHERSCAN_KEY}", chain = 42161 }
+novaArbiscan = { key = "${ETHERSCAN_KEY}", chain = 42170 }
+arbitrumSepolia = { key = "${ETHERSCAN_KEY}", chain = 421614 }
 #[lineaScan]
-linea = { key = "${ETHERSCAN_KEY}", chain = 59144, url = "https://api.etherscan.io/v2/api"}
-lineaTestnet = { key = "${ETHERSCAN_KEY}", chain = 59141, url = "https://api.etherscan.io/v2/api"}
+linea = { key = "${ETHERSCAN_KEY}", chain = 59144 }
+lineaTestnet = { key = "${ETHERSCAN_KEY}", chain = 59141 }
 #[ftmScan]
-ftm = { key = "${ETHERSCAN_KEY}", chain = 250, url = "https://api.etherscan.io/v2/api"}
-ftmTestnet = { key = "${ETHERSCAN_KEY}", chain = 4002, url = "https://api.etherscan.io/v2/api"}
+ftm = { key = "${ETHERSCAN_KEY}", chain = 250 }
+ftmTestnet = { key = "${ETHERSCAN_KEY}", chain = 4002 }
 #[blastScan]
-blast = { key = "${ETHERSCAN_KEY}", chain = 81457, url = "https://api.etherscan.io/v2/api"}
-blastTestnet = { key = "${ETHERSCAN_KEY}", chain = 168587773, url = "https://api.etherscan.io/v2/api"}
+blast = { key = "${ETHERSCAN_KEY}", chain = 81457 }
+blastTestnet = { key = "${ETHERSCAN_KEY}", chain = 168587773 }
 #[optimisticEtherscan]
-optimistic = { key = "${ETHERSCAN_KEY}", chain = 10, url = "https://api.etherscan.io/v2/api"}
-optimisticSepolia = { key = "${ETHERSCAN_KEY}", chain = 11155420, url = "https://api.etherscan.io/v2/api"}
+optimistic = { key = "${ETHERSCAN_KEY}", chain = 10 }
+optimisticSepolia = { key = "${ETHERSCAN_KEY}", chain = 11155420 }
 #[snowScan]
-snow = { key = "${ETHERSCAN_KEY}", chain = 43114, url = "https://api.etherscan.io/v2/api"}
-snowTestnet = { key = "${ETHERSCAN_KEY}", chain = 43113, url = "https://api.etherscan.io/v2/api"}
+snow = { key = "${ETHERSCAN_KEY}", chain = 43114 }
+snowTestnet = { key = "${ETHERSCAN_KEY}", chain = 43113 }
 #[bttcScan]
-bttc = { key = "${ETHERSCAN_KEY}", chain = 199, url = "https://api.etherscan.io/v2/api"}
-donauBttc = { key = "${ETHERSCAN_KEY}", chain = 1028, url = "https://api.etherscan.io/v2/api"}
+bttc = { key = "${ETHERSCAN_KEY}", chain = 199 }
+donauBttc = { key = "${ETHERSCAN_KEY}", chain = 1028 }
 #[celoScan]
-celo = { key = "${ETHERSCAN_KEY}", chain = 42220, url = "https://api.etherscan.io/v2/api"}
-alfajoresCelo = { key = "${ETHERSCAN_KEY}", chain = 44787, url = "https://api.etherscan.io/v2/api"}
+celo = { key = "${ETHERSCAN_KEY}", chain = 42220 }
+alfajoresCelo = { key = "${ETHERSCAN_KEY}", chain = 44787 }
 #[cronoscan]
-cronos = { key = "${ETHERSCAN_KEY}", chain = 25, url = "https://api.etherscan.io/v2/api"}
+cronos = { key = "${ETHERSCAN_KEY}", chain = 25 }
 #[fraxscan]
-frax = { key = "${ETHERSCAN_KEY}", chain = 252, url = "https://api.etherscan.io/v2/api"}
-fraxTestnet = { key = "${ETHERSCAN_KEY}", chain = 2522, url = "https://api.etherscan.io/v2/api"}
+frax = { key = "${ETHERSCAN_KEY}", chain = 252 }
+fraxTestnet = { key = "${ETHERSCAN_KEY}", chain = 2522 }
 #[gnosisScan]
-gnosis = { key = "${ETHERSCAN_KEY}", chain = 100, url = "https://api.etherscan.io/v2/api"}
+gnosis = { key = "${ETHERSCAN_KEY}", chain = 100 }
 #[kromaScan]
-kroma = { key = "${ETHERSCAN_KEY}", chain = 255, url = "https://api.etherscan.io/v2/api"}
-kromaTestnet = { key = "${ETHERSCAN_KEY}", chain = 2358, url = "https://api.etherscan.io/v2/api"}
+kroma = { key = "${ETHERSCAN_KEY}", chain = 255 }
+kromaTestnet = { key = "${ETHERSCAN_KEY}", chain = 2358 }
 #[mantlescan]
-mantle = { key = "${ETHERSCAN_KEY}", chain = 5000, url = "https://api.etherscan.io/v2/api"}
-mantleTestnet = { key = "${ETHERSCAN_KEY}", chain = 5003, url = "https://api.etherscan.io/v2/api"}
+mantle = { key = "${ETHERSCAN_KEY}", chain = 5000 }
+mantleTestnet = { key = "${ETHERSCAN_KEY}", chain = 5003 }
 #[moonbeamScan]
-moonbeam = { key = "${ETHERSCAN_KEY}", chain = 1284, url = "https://api.etherscan.io/v2/api"}
+moonbeam = { key = "${ETHERSCAN_KEY}", chain = 1284 }
 #[moonriverScan]
-moonriver = { key = "${ETHERSCAN_KEY}", chain = 1285, url = "https://api.etherscan.io/v2/api"}
+moonriver = { key = "${ETHERSCAN_KEY}", chain = 1285 }
 #[moonbaseScan]
-moonbase = { key = "${ETHERSCAN_KEY}", chain = 1287, url = "https://api.etherscan.io/v2/api"}
+moonbase = { key = "${ETHERSCAN_KEY}", chain = 1287 }
 #[opbnbBscScan]
-opbnb = { key = "${ETHERSCAN_KEY}", chain = 204, url = "https://api.etherscan.io/v2/api"}
-opbnbTestnet = { key = "${ETHERSCAN_KEY}", chain = 5611, url = "https://api.etherscan.io/v2/api"}
+opbnb = { key = "${ETHERSCAN_KEY}", chain = 204 }
+opbnbTestnet = { key = "${ETHERSCAN_KEY}", chain = 5611 }
 #[scrollScan]
-scroll = { key = "${ETHERSCAN_KEY}", chain = 534352, url = "https://api.etherscan.io/v2/api"}
-scrollTestnet = { key = "${ETHERSCAN_KEY}", chain = 534351, url = "https://api.etherscan.io/v2/api"}
+scroll = { key = "${ETHERSCAN_KEY}", chain = 534352 }
+scrollTestnet = { key = "${ETHERSCAN_KEY}", chain = 534351 }
 #[taikoScan]
-taiko = { key = "${ETHERSCAN_KEY}", chain = 167000, url = "https://api.etherscan.io/v2/api"}
-taikoTestnet = { key = "${ETHERSCAN_KEY}", chain = 167009, url = "https://api.etherscan.io/v2/api"}
+taiko = { key = "${ETHERSCAN_KEY}", chain = 167000 }
+taikoTestnet = { key = "${ETHERSCAN_KEY}", chain = 167009 }
 #[wemixScan]
-wemix = { key = "${ETHERSCAN_KEY}", chain = 1111, url = "https://api.etherscan.io/v2/api"}
-wemixTestnet = { key = "${ETHERSCAN_KEY}", chain = 1112, url = "https://api.etherscan.io/v2/api"}
+wemix = { key = "${ETHERSCAN_KEY}", chain = 1111 }
+wemixTestnet = { key = "${ETHERSCAN_KEY}", chain = 1112 }
 #[zkSyncEra]
-zkSync = { key = "${ETHERSCAN_KEY}", chain = 324, url = "https://api.etherscan.io/v2/api"}
-zkSyncTestnet = { key = "${ETHERSCAN_KEY}", chain = 300, url = "https://api.etherscan.io/v2/api"}
+zkSync = { key = "${ETHERSCAN_KEY}", chain = 324 }
+zkSyncTestnet = { key = "${ETHERSCAN_KEY}", chain = 300 }
 #[xaiScan]
-xai = { key = "${ETHERSCAN_KEY}", chain = 660279, url = "https://api.etherscan.io/v2/api"}
-xaiSepolia = { key = "${ETHERSCAN_KEY}", chain = 37714555429, url = "https://api.etherscan.io/v2/api"}
+xai = { key = "${ETHERSCAN_KEY}", chain = 660279 }
+xaiSepolia = { key = "${ETHERSCAN_KEY}", chain = 37714555429 }
 
 [fmt]
 line_length = 90
