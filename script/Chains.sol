@@ -61,6 +61,17 @@ library Chains {
     if (chainId == 777) return "cantoTestnet";
     if (chainId == 553) return "mantleTestnet";
     if (chainId == 121) return "sandbox";
+    if (chainId == 199) return "bttc";
+    if (chainId == 1028) return "donauBttc";
+    if (chainId == 204) return "opbnb";
+    if (chainId == 5611) return "opbnbTestnet";
+    if (chainId == 5003) return "mantleTestnet";
+    if (chainId == 1111) return "wemix";
+    if (chainId == 1112) return "wemixTestnet";
+    if (chainId == 324) return "zkSync";
+    if (chainId == 300) return "zkSyncTestnet";
+    if (chainId == 660_279) return "xai";
+    if (chainId == 37_714_555_429) return "xaiSepolia";
 
     return "localhost";
   }
