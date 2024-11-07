@@ -65,7 +65,6 @@ echo "$transactions" | while IFS= read -r transaction; do
 
   input_types=$(echo "$constructor_inputs" | jq -r 'map(.type) | join(",")')
   constructor_string="constructor($input_types)"
-  echo "$contractName" "$constructor_string" "$args"
 
   if ! encoded_args=$(cast abi-encode "$constructor_string" $args 2>/dev/null); then
     echo "Error encoding arguments for $contractName with constructor $constructor_string."
