@@ -2,9 +2,8 @@
 pragma solidity >=0.8.0;
 
 import "forge-std/Test.sol";
-import { MockERC20ABI } from "../mock/abi/MockERC20ABI.t.sol";
 
-contract BaseTest is Test, MockERC20ABI {
+contract BaseTest is Test {
   uint256 internal constant MAX_UINT = type(uint256).max;
   address internal constant ZERO_ADDRESS = address(0);
 
@@ -66,8 +65,9 @@ contract BaseTest is Test, MockERC20ABI {
    * @param _name Name that you will see in your terminal
    * @param _isContract Adds bytes code to
    * @param _ethBalance Set the initial balance
-   * @dev The generateAddress in the contract parameters is elegant, but be warned. If you have too many of these,
-   *  you will run into a stack too deep on build, even with `via_ir` on. So it's better to generate them in setUp().
+   * @dev The generateAddress in the contract parameters is elegant, but be warned. If you
+   * have too many of these, you will run into a stack too deep on build, even with
+   * `via_ir` on. So it's better to generate them in setUp().
    */
   function generateAddress(string memory _name, bool _isContract, uint256 _ethBalance)
     internal
