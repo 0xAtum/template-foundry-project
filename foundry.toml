@@ -9,6 +9,10 @@ via_ir = true
 verbosity = 3
 auto_detect_remappings = true
 
+# Foundry 1.0 has Optimizer disabled by default
+#optimizer = true 
+#optimizer_runs = 200 
+
 [profile.e2e]
 match_path = "test/e2e/*"
 
@@ -23,132 +27,26 @@ mainnet = "${RPC_MAINNET}"
 sepolia = "${RPC_SEPOLIA}"
 arbitrum = "${RPC_ARBITRUM}"
 arbitrumTestnet = "${RPC_ARBITRUM_SEPOLIA}"
-holesky = "${RPC_HOLESKY}"
 bsc = "${RPC_BSC}"
 bscTestnet = "${RPC_BSC_TESTNET}"
 polygon = "${RPC_POLYGON}"
 polygonTestnet = "${RPC_POLYGON_TESTNET}"
-zkEVM = "${RPC_ZKEVM}"
-zkEVMTestnet = "${RPC_ZKEVM_TESTNET}"
-base = "${RPC_BASE}"
-baseTestnet = "${RPC_BASE_TESTNET}"
-novaArbiscan = "${RPC_NOVA_ARBISCAN}"
-linea = "${RPC_LINEA}"
-lineaTestnet = "${RPC_LINEA_TESTNET}"
-ftm = "${RPC_FTM}"
-ftmTestnet = "${RPC_FTM_TESTNET}"
-blast = "${RPC_BLAST}"
-blastTestnet = "${RPC_BLAST_TESTNET}"
-optimistic = "${RPC_OPTIMISTIC}"
-optimisticSepolia = "${RPC_OPTIMISTIC_SEPOLIA}"
-snow = "${RPC_SNOW}"
-snowTestnet = "${RPC_SNOW_TESTNET}"
-bttc = "${RPC_BTTC}"
-donauBttc = "${RPC_DONAU_BTTC}"
-celo = "${RPC_CELO}"
-alfajoresCelo = "${RPC_ALFAJORES_CELO}"
-cronos = "${RPC_CRONOS}"
-frax = "${RPC_FRAX}"
-fraxTestnet = "${RPC_FRAX_TESTNET}"
 gnosis = "${RPC_GNOSIS}"
-kroma = "${RPC_KROMA}"
-kromaTestnet = "${RPC_KROMA_TESTNET}"
-mantle = "${RPC_MANTLE}"
-mantleTestnet = "${RPC_MANTLE_TESTNET}"
-moonbeam = "${RPC_MOONBEAM}"
-moonriver = "${RPC_MOONRIVER}"
-moonbase = "${RPC_MOONBASE}"
-opbnb = "${RPC_OPBNB}"
-opbnbTestnet = "${RPC_OPBNB_TESTNET}"
-scroll = "${RPC_SCROLL}"
-scrollTestnet = "${RPC_SCROLL_TESTNET}"
-taiko = "${RPC_TAIKO}"
-taikoTestnet = "${RPC_TAIKO_TESTNET}"
-wemix = "${RPC_WEMIX}"
-wemixTestnet = "${RPC_WEMIX_TESTNET}"
-zkSync = "${RPC_ZKSYNC}"
-zkSyncTestnet = "${RPC_ZKSYNC_TESTNET}"
-xai = "${RPC_XAI}"
-xaiSepolia = "${RPC_XAI_SEPOLIA}"
+gnosisTestnet = "${RPC_GNOSIS_TESTNET}"
 
 [etherscan]
 ethereum = { key = "${ETHERSCAN_KEY}", chain = 1 }
 sepolia = { key = "${ETHERSCAN_KEY}", chain = 11155111 }
-holesky = { key = "${ETHERSCAN_KEY}", chain = 17000 }
-#[BSC]
 bsc = { key = "${ETHERSCAN_KEY}", chain = 56 }
 bscTestnet = { key = "${ETHERSCAN_KEY}", chain = 97 }
-#[polygon]
 polygon = { key = "${ETHERSCAN_KEY}", chain = 137 }
-polygonTestnet = { key = "${ETHERSCAN_KEY}", chain = 80002 }
-#[zkEVM]
-zkEVM = { key = "${ETHERSCAN_KEY}", chain = 1101 }
-zkEVMTestnet = { key = "${ETHERSCAN_KEY}", chain = 2442 }
-#[baseScan]
-base = { key = "${ETHERSCAN_KEY}", chain = 8453 }
-baseTestnet = { key = "${ETHERSCAN_KEY}", chain = 84532 }
-#[arbiscan]
-arbitrum = { key = "${ETHERSCAN_KEY}", chain = 42161 }
-novaArbiscan = { key = "${ETHERSCAN_KEY}", chain = 42170 }
-arbitrumSepolia = { key = "${ETHERSCAN_KEY}", chain = 421614 }
-#[lineaScan]
-linea = { key = "${ETHERSCAN_KEY}", chain = 59144 }
-lineaTestnet = { key = "${ETHERSCAN_KEY}", chain = 59141 }
-#[ftmScan]
-ftm = { key = "${ETHERSCAN_KEY}", chain = 250 }
-ftmTestnet = { key = "${ETHERSCAN_KEY}", chain = 4002 }
-#[blastScan]
-blast = { key = "${ETHERSCAN_KEY}", chain = 81457 }
-blastTestnet = { key = "${ETHERSCAN_KEY}", chain = 168587773 }
-#[optimisticEtherscan]
+polygonTestnet = { key = "${ETHERSCAN_KEY}", chain = 80001 }
 optimistic = { key = "${ETHERSCAN_KEY}", chain = 10 }
-optimisticSepolia = { key = "${ETHERSCAN_KEY}", chain = 11155420 }
-#[snowScan]
-snow = { key = "${ETHERSCAN_KEY}", chain = 43114 }
-snowTestnet = { key = "${ETHERSCAN_KEY}", chain = 43113 }
-#[bttcScan]
-bttc = { key = "${ETHERSCAN_KEY}", chain = 199 }
-donauBttc = { key = "${ETHERSCAN_KEY}", chain = 1028 }
-#[celoScan]
-celo = { key = "${ETHERSCAN_KEY}", chain = 42220 }
-alfajoresCelo = { key = "${ETHERSCAN_KEY}", chain = 44787 }
-#[cronoscan]
-cronos = { key = "${ETHERSCAN_KEY}", chain = 25 }
-#[fraxscan]
-frax = { key = "${ETHERSCAN_KEY}", chain = 252 }
-fraxTestnet = { key = "${ETHERSCAN_KEY}", chain = 2522 }
-#[gnosisScan]
+optimismTestnet = { key = "${ETHERSCAN_KEY}", chain = 420 }
+arbitrum = { key = "${ETHERSCAN_KEY}", chain = 42161 }
+arbitrumSepolia = { key = "${ETHERSCAN_KEY}", chain = 421614 }
 gnosis = { key = "${ETHERSCAN_KEY}", chain = 100 }
-#[kromaScan]
-kroma = { key = "${ETHERSCAN_KEY}", chain = 255 }
-kromaTestnet = { key = "${ETHERSCAN_KEY}", chain = 2358 }
-#[mantlescan]
-mantle = { key = "${ETHERSCAN_KEY}", chain = 5000 }
-mantleTestnet = { key = "${ETHERSCAN_KEY}", chain = 5003 }
-#[moonbeamScan]
-moonbeam = { key = "${ETHERSCAN_KEY}", chain = 1284 }
-#[moonriverScan]
-moonriver = { key = "${ETHERSCAN_KEY}", chain = 1285 }
-#[moonbaseScan]
-moonbase = { key = "${ETHERSCAN_KEY}", chain = 1287 }
-#[opbnbBscScan]
-opbnb = { key = "${ETHERSCAN_KEY}", chain = 204 }
-opbnbTestnet = { key = "${ETHERSCAN_KEY}", chain = 5611 }
-#[scrollScan]
-scroll = { key = "${ETHERSCAN_KEY}", chain = 534352 }
-scrollTestnet = { key = "${ETHERSCAN_KEY}", chain = 534351 }
-#[taikoScan]
-taiko = { key = "${ETHERSCAN_KEY}", chain = 167000 }
-taikoTestnet = { key = "${ETHERSCAN_KEY}", chain = 167009 }
-#[wemixScan]
-wemix = { key = "${ETHERSCAN_KEY}", chain = 1111 }
-wemixTestnet = { key = "${ETHERSCAN_KEY}", chain = 1112 }
-#[zkSyncEra]
-zkSync = { key = "${ETHERSCAN_KEY}", chain = 324 }
-zkSyncTestnet = { key = "${ETHERSCAN_KEY}", chain = 300 }
-#[xaiScan]
-xai = { key = "${ETHERSCAN_KEY}", chain = 660279 }
-xaiSepolia = { key = "${ETHERSCAN_KEY}", chain = 37714555429 }
+gnosisTestnet = { key = "${ETHERSCAN_KEY}", chain = 10200 }
 
 [fmt]
 line_length = 90

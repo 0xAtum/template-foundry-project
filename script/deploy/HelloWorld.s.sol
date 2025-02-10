@@ -43,8 +43,6 @@ contract HelloWorldScript is BaseScript {
     assert(config.owner == address(0xADaE1798F761Fa7fce29B6673D453d1a48A2931A));
     assert(config.ownerTwo == address(0x912CE59144191C1204E64559FE8253a0e49E6548));
 
-    _loadContracts(false);
-
     address helloWorldAddress;
 
     if (_isTestnet() || _isLocal()) {
