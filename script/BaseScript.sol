@@ -5,7 +5,6 @@ import "forge-std/Script.sol";
 import { strings } from "./utils/strings.sol";
 import { Create2 } from "./utils/Create2.sol";
 import { ICreateX } from "./utils/ICreateX.sol";
-import "./Chains.sol";
 
 abstract contract BaseScript is Script {
   type CreateXSeed is bytes32;
@@ -18,6 +17,19 @@ abstract contract BaseScript is Script {
     string contractName;
   }
 
+  struct ChainConfig {
+    uint256 chainId;
+    string name;
+    uint256 testnetChainId;
+    string testnetName;
+  }
+
+  struct ChainMetadata {
+    string name;
+    uint256 chainId;
+    bool isTestnet;
+  }
+
   ICreateX private constant CREATE_X_FACTORY =
     ICreateX(0xba5Ed099633D3B313e4D5F7bdc1305d3c28ba5Ed);
 
@@ -28,9 +40,34 @@ abstract contract BaseScript is Script {
   string private constant ENV_DEPLOY_NETWORK = "DEPLOY_NETWORK";
   string private constant DEPLOY_HISTORY_PATH = "/deployment/";
   string private constant KEY_CONTRACT_NAME = "contractName";
+  string private constant CHAINS_CONFIG_FILE_NAME = "Chains";
+  string private constant LOCAL_HOST_NETWORK_NAME = "localhost";
 
   mapping(string => address) internal contracts;
   mapping(string => mapping(string => address)) internal contractsOtherNetworks;
+  mapping(uint256 => ChainMetadata) internal chainMetadata;
+
+  constructor() {
+    _loadChains();
+    _loadContracts(false);
+  }
+
+  function _loadChains() private {
+    ChainConfig[] memory chainConfigs =
+      abi.decode(vm.parseJson(_getConfig(CHAINS_CONFIG_FILE_NAME)), (ChainConfig[]));
+
+    ChainConfig memory indexChainConfig;
+
+    for (uint256 i = 0; i < chainConfigs.length; ++i) {
+      indexChainConfig = chainConfigs[i];
+
+      chainMetadata[indexChainConfig.chainId] =
+        ChainMetadata(indexChainConfig.name, indexChainConfig.chainId, false);
+
+      chainMetadata[indexChainConfig.testnetChainId] =
+        ChainMetadata(indexChainConfig.testnetName, indexChainConfig.testnetChainId, true);
+    }
+  }
 
   //Entrypoint for the script
   function run() external virtual;
@@ -132,7 +169,7 @@ abstract contract BaseScript is Script {
    * @notice _getNetwork the current chain network's name.
    */
   function _getNetwork() internal view returns (string memory) {
-    return Chains.getChainName();
+    return chainMetadata[block.chainid].name;
   }
 
   /**
@@ -225,11 +262,14 @@ abstract contract BaseScript is Script {
   }
 
   function _isTestnet() internal view returns (bool) {
-    return Chains.isTestnet();
+    return chainMetadata[block.chainid].isTestnet;
   }
 
   function _isLocal() internal view returns (bool) {
-    return Chains.isLocal();
+    bytes32 currentNetwork = keccak256(abi.encode(_getNetwork()));
+    bytes32 localNetwork = keccak256(abi.encode(LOCAL_HOST_NETWORK_NAME));
+
+    return currentNetwork == localNetwork;
   }
 
   /**
