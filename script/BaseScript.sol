@@ -49,7 +49,7 @@ abstract contract BaseScript is Script {
 
   constructor() {
     _loadChains();
-    _loadContracts(false);
+    _loadDeployedContracts(false);
   }
 
   function _loadChains() private {
@@ -66,6 +66,28 @@ abstract contract BaseScript is Script {
 
       chainMetadata[indexChainConfig.testnetChainId] =
         ChainMetadata(indexChainConfig.testnetName, indexChainConfig.testnetChainId, true);
+    }
+  }
+
+  /**
+   * @notice _loadDeployedContractsInSimulation - Load deployed contracts in simulation
+   * too.
+   */
+  function _loadDeployedContractsInSimulation() internal {
+    _loadDeployedContracts(true);
+  }
+
+  function _loadDeployedContracts(bool _loadInSimulation) private {
+    if (!_loadInSimulation && _isSimulation()) return;
+
+    Deployment[] memory deployments = _getDeployedContracts(_getNetwork());
+
+    Deployment memory cached;
+    uint256 length = deployments.length;
+    for (uint256 i = 0; i < length; ++i) {
+      cached = deployments[i];
+      contracts[cached.contractName] = cached.contractAddress;
+      vm.label(cached.contractAddress, cached.contractName);
     }
   }
 
@@ -270,25 +292,6 @@ abstract contract BaseScript is Script {
     bytes32 localNetwork = keccak256(abi.encode(LOCAL_HOST_NETWORK_NAME));
 
     return currentNetwork == localNetwork;
-  }
-
-  /**
-   * @notice _loadContracts - Loads the deployed contracts from the current network inside
-   * the mapping "contracts"
-   * @param _loadInSimulation If it should load in simulation
-   */
-  function _loadContracts(bool _loadInSimulation) internal {
-    if (!_loadInSimulation && _isSimulation()) return;
-
-    Deployment[] memory deployments = _getDeployedContracts(_getNetwork());
-
-    Deployment memory cached;
-    uint256 length = deployments.length;
-    for (uint256 i = 0; i < length; ++i) {
-      cached = deployments[i];
-      contracts[cached.contractName] = cached.contractAddress;
-      vm.label(cached.contractAddress, cached.contractName);
-    }
   }
 
   /**

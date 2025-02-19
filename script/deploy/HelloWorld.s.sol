@@ -35,6 +35,9 @@ contract HelloWorldScript is BaseScript {
     Config memory config =
       abi.decode(vm.parseJson(file, string.concat(".", _getNetwork())), (Config));
 
+    // Load contracts in simulation
+    // _loadDeployedContractsInSimulation();
+
     // Asserts are there as an example to showcase the config is functionnal
     assert(
       keccak256(abi.encode(config.exampleString)) == keccak256(abi.encode("HelloWorld"))
