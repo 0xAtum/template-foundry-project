@@ -15,17 +15,17 @@ abstract contract FacetDeployerScript is BaseScript, DiamondHelper {
   }
 
   function run() external override {
-    tryToDeploy(contracts[FACET_NAME]);
+    tryToDeploy(_tryGetContractAddress(FACET_NAME));
   }
 
   function tryToDeploy() external returns (address) {
-    return tryToDeploy(contracts[FACET_NAME]);
+    return tryToDeploy(_tryGetContractAddress(FACET_NAME));
   }
 
   function tryToDeploy(address _cachedContract) public virtual returns (address);
 
   function getFacetCuts() external view returns (IDiamondCut.FacetCut[] memory) {
-    address facet = contracts[FACET_NAME];
+    address facet = _tryGetContractAddress(FACET_NAME);
     require(facet != address(0), "Facet not deployed.");
 
     return _generateCuts(FACET_INTERFACE, facet);

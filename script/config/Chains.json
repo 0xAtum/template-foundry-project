@@ -41,5 +41,11 @@
         "name": "gnosis",
         "testnetChainId": 10200,
         "testnetName": "gnosisTestnet"
+    },
+    {
+        "chainId": 146,
+        "name": "sonic",
+        "testnetChainId": 57054,
+        "testnetName": "sonicTestnet"
     }
 ]
