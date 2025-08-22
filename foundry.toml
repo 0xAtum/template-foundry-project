@@ -1,6 +1,6 @@
 [profile.default]
 fs_permissions = [{ access = "read-write", path = "./"}]
-solc = '0.8.25'
+solc = '0.8.30'
 src = 'src'
 test = 'test'
 out = 'out'
@@ -25,28 +25,12 @@ match_path = "test/unit/*"
 localhost = "http://127.0.0.1:8545"
 mainnet = "${RPC_MAINNET}"
 sepolia = "${RPC_SEPOLIA}"
-arbitrum = "${RPC_ARBITRUM}"
-arbitrumTestnet = "${RPC_ARBITRUM_SEPOLIA}"
-bsc = "${RPC_BSC}"
-bscTestnet = "${RPC_BSC_TESTNET}"
-polygon = "${RPC_POLYGON}"
-polygonTestnet = "${RPC_POLYGON_TESTNET}"
-gnosis = "${RPC_GNOSIS}"
-gnosisTestnet = "${RPC_GNOSIS_TESTNET}"
+sonicTestnet = "${RPC_SONIC_TESTNET}"
 
 [etherscan]
 ethereum = { key = "${ETHERSCAN_KEY}", chain = 1 }
 sepolia = { key = "${ETHERSCAN_KEY}", chain = 11155111 }
-bsc = { key = "${ETHERSCAN_KEY}", chain = 56 }
-bscTestnet = { key = "${ETHERSCAN_KEY}", chain = 97 }
-polygon = { key = "${ETHERSCAN_KEY}", chain = 137 }
-polygonTestnet = { key = "${ETHERSCAN_KEY}", chain = 80001 }
-optimistic = { key = "${ETHERSCAN_KEY}", chain = 10 }
-optimismTestnet = { key = "${ETHERSCAN_KEY}", chain = 420 }
-arbitrum = { key = "${ETHERSCAN_KEY}", chain = 42161 }
-arbitrumSepolia = { key = "${ETHERSCAN_KEY}", chain = 421614 }
-gnosis = { key = "${ETHERSCAN_KEY}", chain = 100 }
-gnosisTestnet = { key = "${ETHERSCAN_KEY}", chain = 10200 }
+sonicTestnet = { key = "${ETHERSCAN_KEY}", chain = 146 }
 
 [fmt]
 line_length = 90

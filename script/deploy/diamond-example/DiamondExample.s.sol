@@ -50,8 +50,8 @@ contract DiamondExample is BaseScript, DiamondHelper {
     internal
     returns (address diamondCut_, address diamondLoupe_, address ownership_)
   {
-    diamondCut_ = contracts[DIAMOND_CUT];
-    diamondLoupe_ = contracts[DIAMOND_LOUPE];
+    diamondCut_ = _tryGetContractAddress(DIAMOND_CUT);
+    diamondLoupe_ = _tryGetContractAddress(DIAMOND_LOUPE);
 
     if (_isNull(diamondCut_)) {
       vm.broadcast(_getDeployerPrivateKey());
@@ -75,8 +75,8 @@ contract DiamondExample is BaseScript, DiamondHelper {
     view
     returns (IDiamondCut.FacetCut[] memory)
   {
-    address diamondCut = contracts[DIAMOND_CUT];
-    address diamondLoupe = contracts[DIAMOND_LOUPE];
+    address diamondCut = _tryGetContractAddress(DIAMOND_CUT);
+    address diamondLoupe = _tryGetContractAddress(DIAMOND_LOUPE);
 
     require(!_isNull(diamondCut) && !_isNull(diamondLoupe), "Facet not deployed.");
 

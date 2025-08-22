@@ -32,37 +32,27 @@ while true; do
     IFS=$'\n' read -r -d '' -a endpoint_array <<<"$endpoints"
 
     echo "Please select an RPC endpoint:"
-    select network in "${endpoint_array[@]}"; do
+    select network in "multichain" "${endpoint_array[@]}"; do
         if [ -n "$network" ]; then
-            # Extract the value of the selected key from the environment variables
-            RPC_URL=$(awk -v key="$network" -F' *= *' '$1 == key {gsub(/"/, "", $2); print $2; exit}' foundry.toml)
+            if [ "$network" == "multichain" ]; then
+                RPC_URL="multichain"
+                is_multichain=true
+            else
+                is_multichain=false
+                # Extract the value of the selected key from the environment variables
+                RPC_URL=$(awk -v key="$network" -F' *= *' '$1 == key {gsub(/"/, "", $2); print $2; exit}' foundry.toml)
 
-            # Check if the value contains ${} pattern
-            if [[ "$RPC_URL" =~ \$\{.*\} ]]; then
-                RPC_URL=$(echo "$RPC_URL" | sed 's/\${//;s/}//') 
-                RPC_URL=$(get_env_value "$RPC_URL")
+                # Check if the value contains ${} pattern
+                if [[ "$RPC_URL" =~ \$\{.*\} ]]; then
+                    RPC_URL=$(echo "$RPC_URL" | sed 's/\${//;s/}//') 
+                    RPC_URL=$(get_env_value "$RPC_URL")
+                fi
             fi
             break
         else
             echo "Invalid selection. Please try again."
         fi
     done
-    echo
-
-    #
-    # Create missing json deployment file
-    #
-    
-    mkdir -p "./deployment"
-
-    file="./deployment/"$network".json"
-
-    if [ -e "$file" ]; then
-        echo "$file found"
-    else
-        touch "$file"
-        echo "$file created."
-    fi
     echo
 
     #
@@ -104,12 +94,23 @@ while true; do
     #
     # Deployment
     #
-
-    if $is_simulation; then
-        make simulate-deploy SCRIPT_NAME=$script_name RPC=$RPC_URL
+    command="forge script $script_name"
+    if [[ $is_multichain == true ]]; then
+        command+=" --multi"
+        if [[ $is_simulation == false ]]; then
+            command+=" --slow"
+        fi
     else
-        make deploy SCRIPT_NAME=$script_name RPC=$RPC_URL
+        command+=" --rpc-url $RPC_URL"
     fi
+
+    if [[ $is_simulation == false ]]; then
+        command+=" --broadcast"
+    fi
+    command+=" -vvvv"
+    
+    echo $command
+    eval $command
 
     #
     # Repeat

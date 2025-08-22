@@ -43,9 +43,9 @@ abstract contract BaseScript is Script {
   string private constant CHAINS_CONFIG_FILE_NAME = "Chains";
   string private constant LOCAL_HOST_NETWORK_NAME = "localhost";
 
-  mapping(string => address) internal contracts;
-  mapping(string => mapping(string => address)) internal contractsOtherNetworks;
+  mapping(bytes32 => address) private contracts;
   mapping(uint256 => ChainMetadata) internal chainMetadata;
+  mapping(string => uint256) private createdForks;
 
   constructor() {
     _loadChains();
@@ -69,6 +69,16 @@ abstract contract BaseScript is Script {
     }
   }
 
+  function _changeNetwork(string memory _network) internal {
+    if (createdForks[_network] == 0) {
+      createdForks[_network] = vm.createSelectFork(_network);
+    } else {
+      vm.selectFork(createdForks[_network]);
+    }
+
+    _loadDeployedContracts(false);
+  }
+
   /**
    * @notice _loadDeployedContractsInSimulation - Load deployed contracts in simulation
    * too.
@@ -86,7 +96,8 @@ abstract contract BaseScript is Script {
     uint256 length = deployments.length;
     for (uint256 i = 0; i < length; ++i) {
       cached = deployments[i];
-      contracts[cached.contractName] = cached.contractAddress;
+      contracts[_contractNameToBytes32(_getNetwork(), cached.contractName)] =
+        cached.contractAddress;
       vm.label(cached.contractAddress, cached.contractName);
     }
   }
@@ -118,7 +129,7 @@ abstract contract BaseScript is Script {
     bytes memory _creationCode,
     bytes memory _args
   ) internal returns (address contract_, bool isAlreadyExisting_) {
-    contract_ = contracts[_name];
+    contract_ = contracts[_contractNameToBytes32(_getNetwork(), _name)];
     if (address(contract_) != address(0)) return (contract_, true);
 
     vm.broadcast(_getDeployerPrivateKey());
@@ -146,7 +157,7 @@ abstract contract BaseScript is Script {
     bytes memory _creationCode,
     bytes memory _args
   ) internal returns (address contract_, bool isAlreadyExisting_) {
-    contract_ = contracts[_name];
+    contract_ = contracts[_contractNameToBytes32(_getNetwork(), _name)];
     if (address(contract_) != address(0)) return (contract_, true);
 
     vm.broadcast(_getDeployerPrivateKey());
@@ -171,7 +182,7 @@ abstract contract BaseScript is Script {
     bytes memory _creationCode,
     bytes memory _args
   ) internal returns (address contract_, bool isAlreadyExisting_) {
-    contract_ = contracts[_name];
+    contract_ = contracts[_contractNameToBytes32(_getNetwork(), _name)];
     if (address(contract_) != address(0)) return (contract_, true);
 
     bytes memory _code = abi.encodePacked(_creationCode, _args);
@@ -219,7 +230,7 @@ abstract contract BaseScript is Script {
     string memory currentData = vm.readFile(_getDeploymentPath(_getNetwork()));
     strings.slice memory slicedCurrentData = currentData.toSlice();
 
-    if (contracts[_contractName] != address(0)) {
+    if (contracts[_contractNameToBytes32(_getNetwork(), _contractName)] != address(0)) {
       console.log(_contractName, "Already exists");
       return;
     }
@@ -233,7 +244,7 @@ abstract contract BaseScript is Script {
 
     vm.writeJson(insertData, _getDeploymentPath(_getNetwork()));
 
-    contracts[_contractName] = _contractAddress;
+    contracts[_contractNameToBytes32(_getNetwork(), _contractName)] = _contractAddress;
   }
 
   function _addContractToString(string memory _currentData, string memory _contractData)
@@ -311,7 +322,8 @@ abstract contract BaseScript is Script {
     uint256 length = deployments.length;
     for (uint256 i = 0; i < length; ++i) {
       cached = deployments[i];
-      contractsOtherNetworks[_network][cached.contractName] = cached.contractAddress;
+      contracts[_contractNameToBytes32(_network, cached.contractName)] =
+        cached.contractAddress;
       vm.label(cached.contractAddress, cached.contractName);
     }
   }
@@ -323,7 +335,6 @@ abstract contract BaseScript is Script {
    */
   function _getDeployedContracts(string memory _network)
     internal
-    view
     returns (Deployment[] memory deployments_)
   {
     bytes memory json = _getDeployedContractsJson(_network);
@@ -340,10 +351,17 @@ abstract contract BaseScript is Script {
    */
   function _getDeployedContractsJson(string memory _network)
     private
-    view
     returns (bytes memory jsonBytes_)
   {
-    string memory fileData = vm.readFile(_getDeploymentPath(_network));
+    string memory deploymentPath = _getDeploymentPath(_network);
+    string memory fileData;
+
+    try vm.readFile(deploymentPath) returns (string memory foundData) {
+      fileData = foundData;
+    } catch {
+      vm.writeFile(deploymentPath, "[]");
+      fileData = "";
+    }
 
     if (fileData.toSlice().empty()) return jsonBytes_;
 
@@ -368,5 +386,29 @@ abstract contract BaseScript is Script {
 
   function _isSimulation() internal view returns (bool) {
     return vm.isContext(VmSafe.ForgeContext.ScriptDryRun);
+  }
+
+  function _contractNameToBytes32(string memory _network, string memory _contractName)
+    internal
+    pure
+    returns (bytes32)
+  {
+    return keccak256(abi.encode(_network, _contractName));
+  }
+
+  function _tryGetContractAddress(string memory _contractName)
+    internal
+    view
+    returns (address)
+  {
+    return contracts[_contractNameToBytes32(_getNetwork(), _contractName)];
+  }
+
+  function _tryGetContractAddress(string memory _network, string memory _contractName)
+    internal
+    view
+    returns (address)
+  {
+    return contracts[_contractNameToBytes32(_network, _contractName)];
   }
 }
