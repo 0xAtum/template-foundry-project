@@ -10,4 +10,9 @@ contract ForgeVerificationE2E is BaseTest {
         == keccak256(abi.encode("e2e"))
     );
   }
+
+  function test_onRun_selectEthereumFork() external {
+    vm.createSelectFork(vm.envString("RPC_MAINNET"));
+    assertEq(block.chainid, 1);
+  }
 }
