@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import "../BaseScript.sol";
 import { HelloWorld } from "src/HelloWorld.sol";
 
-contract HelloWorldScript is BaseScript {
+contract DeployExampleScript is BaseScript {
   /**
    * @dev Converting json file to solidity struct has one important concept.
    * The parse reads the json's elements in Alphabetical order

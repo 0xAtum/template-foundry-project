@@ -105,7 +105,7 @@ while true; do
     fi
 
     if [[ $is_simulation == false ]]; then
-        command+=" --broadcast"
+        command+=" --broadcast --verify"
     fi
     command+=" -vvvv"
     

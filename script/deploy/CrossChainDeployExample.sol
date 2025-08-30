@@ -4,21 +4,13 @@ pragma solidity ^0.8.0;
 import "../BaseScript.sol";
 import { HelloWorld } from "src/HelloWorld.sol";
 
-contract HelloWorldScript is BaseScript {
-  /**
-   * @dev Converting json file to solidity struct has one important concept.
-   * The parse reads the json's elements in Alphabetical order
-   *
-   * In our example
-   * Config::owner is the first element, but in the json, it's the second.
-   * But since it starts with "01_", it becomes the first element in the json after the
-   * sorting
-   *
-   * Tips: As the config is set, to avoid any confusion, I recommend to add a prefix
-   * XX_<NAME>
-   * That way you should never have an unexpected behavior while converting from json to
-   * struct.
-   */
+/**
+ * @dev IMPORTANT: When performing cross-chain deployments, ensure that you do not
+ * store the results of _getDeployerAddress() or _getDeployerPrivateKey() locally
+ * unless you have called _changeNetwork() beforehand. Failing to do so will result
+ * in using the LocalHost's private key.
+ */
+contract CrossChainDeployExampleScript is BaseScript {
   struct Config {
     address owner;
     uint256 exampleInt;
