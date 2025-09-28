@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "script/BaseScript.sol";
 import { DiamondHelper } from "./DiamondHelper.sol";
-import { IDiamondCut } from "./IDiamondCut.sol";
+import { IDiamondCut } from "src/diamond/interfaces/IDiamondCut.sol";
 
 abstract contract FacetDeployerScript is BaseScript, DiamondHelper {
   string internal FACET_NAME;

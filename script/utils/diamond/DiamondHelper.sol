@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 import { strings } from "../strings.sol";
-import { IDiamondCut } from "./IDiamondCut.sol";
+import { IDiamondCut } from "src/diamond/interfaces/IDiamondCut.sol";
 
 contract DiamondHelper is Script {
   using strings for string;

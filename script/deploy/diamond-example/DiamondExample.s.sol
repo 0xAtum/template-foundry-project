@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "script/BaseScript.sol";
 import { DiamondHelper } from "script/utils/diamond/DiamondHelper.sol";
-import { IDiamondCut } from "script/utils/diamond/IDiamondCut.sol";
+import { IDiamondCut } from "src/diamond/interfaces/IDiamondCut.sol";
 
 import { ExampleDiamondApp } from "src/ExampleDiamondApp.sol";
 import { DiamondCutFacet } from "src/diamond/facets/DiamondCutFacet.sol";
